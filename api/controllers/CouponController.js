@@ -4,6 +4,7 @@
  * @description :: Server-side logic for managing coupon
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
+
  var fs = require('fs');
  module.exports = {
     express: function(req, res) {
@@ -21,8 +22,8 @@
             req.session._filename = filename.filename;
             console.log(req.session._filename);
             return res.json({
-                    data: filename
-                });
+                data: filename
+            });
         });
     },
     advanced: function(req, res) {
@@ -34,8 +35,8 @@
             req.session._rules = params;
             req.session._filename = filename.filename;
             return res.json({
-                    data: filename
-                });
+                data: filename
+            });
         });
     },
     upload: function(req, res) {
@@ -58,6 +59,5 @@
             'Content-Disposition': "attachment;filename=" + req.param('filename')
         });
         fs.createReadStream('assets/download/' + req.param('filename')).pipe(res);
-
     }
  }
