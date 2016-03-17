@@ -37,7 +37,7 @@
                 if (coupons.error && coupons.error == true) {
                     console.log('error occured during order request ');
                     return res.json({
-                        data: 'No!'
+                        data: false
                     });
                 }else{
                     var repeat_code_len,
@@ -87,13 +87,15 @@
         }).catch(function (err) {
             console.log(err);
             return res.json({
-                data: 'No!'
+                data: false
             });
         });
     },
     confirm: function(req, res) {
+        var params = req.allParams();
+        console.log(params);
         Tasks.update({
-            id: session.tasks_id
+            id: req.session.task_id
         },{
             status: 1
         }).then(function(updated) {

@@ -56,14 +56,17 @@
                 // console.log('va');
             }
         }).done(function (response){
-            alert('Done!');
-            console.log(response);
-            $('.confirmation .text').html('<h2>Summary</h2><p><a href="">'+ response.data.had_codes +'</a> exsiting coupon codes are found.<br/>There are <a href="">'+ response.data.repeat_code +'</a> coupon codes duplicated. If you have used our coupon generator another <a href="">'+ response.data.another_code +'</a> valid coupons will bere-generated.Otherwise,we will skip duplicated ones anyway.</p><p><a href="">'+ response.data.category_len +'</a> categories are found as following:<br/>( Please leave them unchecked if you do not want to add any category restrictions.)</p>');
-            for (var i = 0; i < response.data.categories.length; i++) {
-                $('.confirmation .form form .checkbox').append('<input type="checkbox" name="category-'+ response.data.categories[i].id +'" value="' + response.data.categories[i].id + '" /><label>' + response.data.categories[i].name + '</label>');
+            if(response.data === false){
+                alert('Network instability !');
+            }else{
+                alert('Done !');
+                $('.confirmation .text').html('<h2>Summary</h2><p><a href="">'+ response.data.had_codes +'</a> exsiting coupon codes are found.<br/>There are <a href="">'+ response.data.repeat_code +'</a> coupon codes duplicated. If you have used our coupon generator another <a href="">'+ response.data.another_code +'</a> valid coupons will bere-generated.Otherwise,we will skip duplicated ones anyway.</p><p><a href="">'+ response.data.category_len +'</a> categories are found as following:<br/>( Please leave them unchecked if you do not want to add any category restrictions.)</p>');
+                for (var i = 0; i < response.data.categories.length; i++) {
+                    $('.confirmation .form form .checkbox').append('<input type="checkbox" name="category-'+ response.data.categories[i].id +'" value="' + response.data.categories[i].id + '" /><label>' + response.data.categories[i].name + '</label>');
+                }
+                $('section.upload').removeClass('active');
+                $('section.confirmation').addClass('active');
             }
-            $('section.upload').removeClass('active');
-            $('section.confirmation').addClass('active');
         });
         return false;
     });
