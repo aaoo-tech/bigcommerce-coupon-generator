@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Coupon Code</title>
+
+    <style>
+    </style>
+  </head>
+  <body>
+    <div class="page-width">
+        <div class="export">
+            <h2>Coupon Code</h2>
+            <form action="/index/code" method="post" enctype="multipart/form-data">
+                <div class="form-holder">
+                    <div class="entry form-group">
+                        <label for="email">Email:</label>
+                        <input id="email" type="email" name="email" placeholder="" />
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="entry form-group">
+                        <label for="url">Url:</label>
+                        <input id="url" type="text" name="url" placeholder="" />
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="entry form-group">
+                        <label for="token">Token:</label>
+                        <input id="token" type="text" name="token" placeholder="" />
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="entry-checkbox form-group">
+                        <input id="uppercase" type="checkbox" name="uppercase" value="1" />
+                        <label for="uppercase">Uppercase</label>
+                    </div>
+                    <div class="entry-checkbox form-group">
+                        <input id="lowercase" type="checkbox" name="lowercase" value="1" />
+                        <label for="lowercase">Lowercase</label>
+                    </div>
+                    <div class="entry-checkbox form-group">
+                        <input id="digital" type="checkbox" name="digital" value="1" />
+                        <label for="digital">Digital</label>
+                    </div>
+                    <div class="entry form-group">
+                        <label for="prefix">Prefix:</label>
+                        <input id="prefix" type="text" name="_prefix" placeholder="" />
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="entry form-group">
+                        <label for="suffix">Suffix:</label>
+                        <input id="suffix" type="text" name="suffix" placeholder="" />
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="entry form-group">
+                        <label for="length">Length:</label>
+                        <input id="length" type="text" name="_length" placeholder="" />
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="entry form-group">
+                        <label for="number">Number:</label>
+                        <input id="number" type="text" name="number" placeholder="" />
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <input type="submit" value="submit">
+                    <div class="btn-set">
+                        <a href="#" class="btn btn-action">Start</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+  </body>
+</html>

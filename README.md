@@ -1,1 +1,3 @@
-# bigcommerce-coupon-generator
+# coupon
+
+a [Sails](http://sailsjs.org) application

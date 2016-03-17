@@ -1,0 +1,187 @@
+    <div class="wrap">
+    <section class="quick active clearfix">
+        <div class="title">
+            <span>1</span>
+            <h1>Quick Coupons</h1>
+        </div>
+        <div class="tips">
+            <img src="/images/i.svg">
+            <p>I aleady have coupons <a href="">need to upload</a>.</p>
+        </div>
+        <div class="hide">
+            <form action="/coupon/upload" class="dropzone"></form>
+<!--             <form action="/coupon/upload" method="post" enctype="multipart/form-data">
+                <input type="file" name="csv_file" class="csv_file" />
+                <input type="submit" value="submit'" />
+                <div class="btn btn-upload">
+                    <a href="">Upload</a>
+                </div>
+            </form> -->
+        </div>
+        <div class="form">
+            <form action="/coupon/express" method="post">
+                <div class="entry">
+                    I want to generate <input class="col-30" type="number" name="number" min="0" placeholder="1000"/> coupons with.
+                </div>
+                <div class="entry">
+                    <select name="discount">
+                        <option>10% off discount</option>
+                        <option>20% off discount</option>
+                        <option>30% off discount</option>
+                    </select>
+                </div>
+                <div class="btn submit">
+                    <a href="">Generate!</a>
+                </div>
+                <div class="btn change">
+                    <a href="">Advanced Settings</a>
+                </div>
+                <div class="clear"></div>
+            </form>
+        </div>
+    </section>
+    <section class="advanced clearfix">
+        <div class="title">
+            <span>1</span>
+            <h1>Advanced Coupons</h1>
+        </div>
+        <div class="tips">
+            <img src="/images/i.svg">
+            <p>I aleady have coupons <a href="">need to upload</a></p>
+        </div>
+        <div class="hide">
+            <form action="/upload-target" class="dropzone"></form>
+        </div>
+        <div class="form">
+            <form action="" method="post">
+                <div class="entry">
+                    I want to generate <input class="col-30" type="number" name="number" min="0" placeholder="1000"/> coupons with<br />
+                </div>
+                <div class="entry name">
+                    <label for="">Coupon Name<i>*</i></label>
+                    <input id="" type="text" name="coupon_name" placeholder="An attractive aoupon code" />
+                </div>
+                <div class="entry fl col-25 prefix">
+                    <label for="">Prefix</label>
+                    <input id="" type="text" name="_prefix" placeholder="ATTR-" />
+                </div>
+                <div class="entry fl col-10 lan">
+                    <label for="">Len<i>*</i></label>
+                    <input id="" type="number" min="0" max="20" name="len" placeholder="6" />
+                </div>
+                <div class="entry fl col-40 type">
+                    <label for="">Type<i>*</i></label>
+                    <select name="_charset">
+                        <option value="1">alphanumeric</option>
+                        <option value="2">alpha2</option>
+                        <option value="3">alpha3</option>
+                        <option value="4">alpha4</option>
+                        <option value="5">alpha5</option>
+                        <option value="6">alpha6</option>
+                        <option value="7">alpha7</option>
+                    </select>
+                </div>
+                <div class="entry fl col-25 sufix">
+                    <label for="">Suffix</label>
+                    <input id="" type="text" name="suffix" placeholder="-1" />
+                </div>
+                <div class="clear preview">
+                    <label>Preview: </label>
+                    <p></p>
+                    <div class="clear"></div>
+                </div>
+                <div class="entry">
+                    <label>Discount Type<i>*</i></label>
+                    <select class="fl col-70">
+                        <option></option>
+                    </select>
+                    <input class="col-30" type="number" name="" />
+                </div>
+                <div class="entry">
+                    <label>Limt total number of uses</label>
+                    <input type="number" name="max_uses" placeholder="Leave it empty for no limit" />
+                </div>
+                <div class="entry">
+                    <label>Limt number of uses per customer</label>
+                    <input type="number" name="num_uses" placeholder="Leave it empty for no limit" />
+                </div>
+                <div class="entry">
+                    <label>Expiry Date</label>
+                    <input type="date" />
+                </div>
+                <div class="btn submit">
+                    <a href="">Generate!</a>
+                </div>
+                <div class="btn change">
+                    <a href="">Quick Settings</a>
+                </div>
+                <div class="clear"></div>
+            </form>
+        </div>
+    </section>
+    <section class="upload clearfix">
+        <div class="title">
+            <span>2</span>
+            <h1>Upload Your Coupons</h1>
+        </div>
+        <div class="tips">
+            <img src="/images/i.svg">
+            <p>Download your coupons <a href='#' target="_blank">here</a>.</p>
+        </div>
+        <div class="form">
+            <form action="" method="post">
+                <div class="entry">
+                    <input type="email" name="email" placeholder="Leave it empty for no limit"/>
+                </div>
+                <div class="entry">
+                    <input type="url" name="url" placeholder="URL"/>
+                </div>
+                <div class="entry">
+                    <input type="text" name="username" placeholder="Username"/>
+                </div>
+                <div class="entry">
+                    <input type="text" name="token" placeholder="API Token"/>
+                </div>
+                <div class="btn submit">
+                    <a href="./confirmation.html">Go!</a>
+                </div>
+            </form>
+        </div>
+    </section>
+    <section class="confirmation clearfix">
+        <div class="title">
+            <span>3</span>
+            <h1>Confirmation</h1>
+        </div>
+        <%= req.session.task_id %>
+        <div class="tips">
+            <img src="/images/i.svg">
+            <p>Great Big Conirmerce.</p>
+        </div>
+        <div class="text">
+
+        </div>
+        <div class="form">
+            <form action="" method="post">
+            <div class="entry checkbox">
+            </div>
+            <div class="btn submit">
+                <a href="#">Go!</a>
+            </div>
+            </form>
+        </div>
+    </section>
+    <section class="successful clearfix">
+        <div class="title">
+            <span>4</span>
+            <h1>Successful</h1>
+        </div>
+        <div class="tips">
+            <span><img src="/images/i.svg"></span>
+            <p>Great,Your task id successfully submittect.</p>
+        </div>
+        <div class="text">
+            <p>babababa</p>
+        </div>
+    </section>
+    </div>
