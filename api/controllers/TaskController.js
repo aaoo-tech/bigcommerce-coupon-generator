@@ -13,12 +13,31 @@
  module.exports = {
     create: function(req, res) {
         var params = req.allParams();
+        if(params.email.match([\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?) == null){
+            return res.json({
+                message: 'This is required.'
+            });
+        }
+        if(params._url == ''){
+            return res.json({
+                message: 'This is required.'
+            });
+        }
+        if(params.username == ''){
+            return res.json({
+                message: 'This is required.'
+            });
+        }
+        if(params._token == ''){
+            return res.json({
+                message: 'This is required.'
+            });
+        }
         var _email = params.email,
             _url = params.url,
             _token = params.token,
             username = params.username;
         // var code_form = parseInt("" + uppercase + lowercase + digital, 2);
-
         Tasks.create({
             email: _email,
             url: _url,
