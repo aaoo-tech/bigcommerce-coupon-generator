@@ -17,6 +17,7 @@ module.exports = {
     // len: 'string',
     // number: 'integer',
     csv_filename: 'string',
+    category: 'string',
     is_upload: {
         type: 'integer',
         defaultsTo: 0

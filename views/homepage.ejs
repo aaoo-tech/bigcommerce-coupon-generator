@@ -6,7 +6,7 @@
         </div>
         <div class="tips">
             <img src="/images/i.svg">
-            <p>I aleady have coupons <a href="">need to upload</a>.</p>
+            <p>I aleady have coupons <a class="show-upload" href="">need to upload</a>.</p>
         </div>
         <div class="hide">
             <form action="/coupon/upload" class="dropzone"></form>
@@ -47,7 +47,7 @@
         </div>
         <div class="tips">
             <img src="/images/i.svg">
-            <p>I aleady have coupons <a href="">need to upload</a></p>
+            <p>I aleady have coupons <a class="show-upload" href="">need to upload</a></p>
         </div>
         <div class="hide">
             <form action="/upload-target" class="dropzone"></form>
@@ -93,7 +93,7 @@
                         <option value="0">x % Discount</option>
                         <option value="1"></option>
                     </select>
-                    <input class="col-30" type="number" name="" />
+                    <input class="col-30" type="number" name="discount_type" />
                 </div>
                 <div class="entry">
                     <label>Limt total number of uses</label>
@@ -105,7 +105,7 @@
                 </div>
                 <div class="entry">
                     <label>Expiry Date</label>
-                    <input type="date" />
+                    <input type="date" name="expiry_date" />
                 </div>
                 <div class="btn submit">
                     <a href="">Generate!</a>
