@@ -2,7 +2,7 @@
     <section class="quick active clearfix">
         <div class="title">
             <span>1</span>
-            <h1>Quick Coupons</h1>
+            <h1>Express Coupons</h1>
         </div>
         <div class="tips">
             <img src="/images/i.svg">
@@ -21,13 +21,13 @@
         <div class="form">
             <form action="/coupon/express" method="post">
                 <div class="entry">
-                    I want to generate <input class="col-30" type="number" name="number" min="0" placeholder="1000"/> coupons with.
+                    I want to generate <input class="col-30 center" type="number" name="number" min="0" placeholder="1000" style="margin: 0 10px;"/> coupons with.
                 </div>
                 <div class="entry">
                     <select name="discount">
-                        <option>10% off discount</option>
-                        <option>20% off discount</option>
-                        <option>30% off discount</option>
+                        <option value="0">10% off discount</option>
+                        <option value="1">20% off discount</option>
+                        <option value="2">30% off discount</option>
                     </select>
                 </div>
                 <div class="btn submit">
@@ -55,7 +55,7 @@
         <div class="form">
             <form action="" method="post">
                 <div class="entry">
-                    I want to generate <input class="col-30" type="number" name="number" min="0" placeholder="1000"/> coupons with<br />
+                    I want to generate <input class="col-30 center" type="number" name="number" min="0" placeholder="1000" style="margin: 0 10px;"/> coupons with<br />
                 </div>
                 <div class="entry name">
                     <label for="">Coupon Name<i>*</i></label>
@@ -72,13 +72,10 @@
                 <div class="entry fl col-40 type">
                     <label for="">Type<i>*</i></label>
                     <select name="_charset">
-                        <option value="1">alphanumeric</option>
-                        <option value="2">alpha2</option>
-                        <option value="3">alpha3</option>
-                        <option value="4">alpha4</option>
-                        <option value="5">alpha5</option>
-                        <option value="6">alpha6</option>
-                        <option value="7">alpha7</option>
+                        <option value="1">Number Only</option>
+                        <option value="2">Lowercase Letter Only</option>
+                        <option value="3">Uppercase Letter Only</option>
+                        <option value="4">Alphanumeric</option>
                     </select>
                 </div>
                 <div class="entry fl col-25 sufix">
@@ -93,7 +90,8 @@
                 <div class="entry">
                     <label>Discount Type<i>*</i></label>
                     <select class="fl col-70">
-                        <option></option>
+                        <option value="0">x % Discount</option>
+                        <option value="1"></option>
                     </select>
                     <input class="col-30" type="number" name="" />
                 </div>

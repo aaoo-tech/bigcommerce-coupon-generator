@@ -174,6 +174,7 @@
     $('body').on('click','.quick .form .change a',function(){
         $('section.quick').removeClass('active');
         $('section.advanced').addClass('active');
+        $('section.advanced select').customSelect();
         return false;
     });
     $('body').on('click','.advanced .form .change a',function(){
@@ -184,6 +185,8 @@
     // $('body').on('click','section .form .submit a',function(){
 
     // });
+
+    $('section.quick select').customSelect();
 
   });
 })(jQuery);
