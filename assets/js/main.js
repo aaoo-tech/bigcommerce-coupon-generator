@@ -149,7 +149,7 @@
 
     prev();
 
-    $('.tips a').click(function(){
+    $('a.show-upload').click(function(){
         $('.hide').slideDown(500);
         return false;
     });
