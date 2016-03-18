@@ -6,9 +6,9 @@
     async = require('async'),
     randomstring = require('randomstring');
 module.exports = {
-    _write: function(data, callback) {
+    _write: function(data, fields, callback) {
         // var fields = ['code'];
-        json2csv({ data: data }, function(err, csv) {
+        json2csv({ data: data, fields: fields }, function(err, csv) {
             if(err){
                 console.log(err);
             }

@@ -9,13 +9,33 @@
  module.exports = {
     express: function(req, res) {
         var params = req.allParams();
+
         params._charset = 0;
-        params._prefix = 'AA';
-        params.suffix = 'OO';
+        params._prefix = 'AA-';
+        params.suffix = '-OO';
         params.len = 8;
         params.is_express = 1;
-        // params.number = 100;
-        // console.log(params);
+
+        // set default properties
+        params.coupon_name = 'Coupon by AAOO';
+        params.max_uses = 1;
+        params.num_uses = 1;
+        params.expire_date = '2100-01-01';
+
+        switch (params.discount) {
+        case '0':
+            params.discount_type = 0;
+            params.discount_amount = 10;
+            break;
+        case '1':
+            params.discount_type = 2;
+            params.discount_amount = 10;
+            break;
+        case '2':
+            params.discount_type = 4;
+            params.discount_amount = 0;
+        }
+
         CouponService.generate(params, [], function(filename) {
             console.log(filename);
             req.session._rules = params;
@@ -30,6 +50,14 @@
         var params = req.allParams();
         params.is_express = 0;
         console.log(params);
+
+        // check the parameters
+        if (params._prefix == '') { params._prefix = 'AA-'; }
+        if (params.suffix == '') { params.suffix = '-OO'; }
+        if (params.max_uses == '') { params.max_uses = -1; }
+        if (params.num_uses == '') { params.num_uses = -1; }
+        if (_.isUndefined(params.expire_date)) { params.expire_date = '2100-01-01'; }
+
         CouponService.generate(params, [], function(filename) {
             console.log(filename);
             req.session._rules = params;

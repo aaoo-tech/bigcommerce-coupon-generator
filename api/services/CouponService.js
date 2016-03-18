@@ -14,6 +14,7 @@ module.exports = {
     });
   },
   generate: function(params, old_codes, callback) {
+    console.log(params);
     switch(params._charset){
         case 0:
             // Number Only
@@ -33,7 +34,7 @@ module.exports = {
             _charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJQLMNOPQRSTUVWXYZ0123456789';
     }
 
-    var fields = ['code'];
+    // generate coupons
     var data = [];
     for (var i = 0; i < parseInt(params.number); i++) {
         var coupon_code = {};
@@ -45,17 +46,27 @@ module.exports = {
             }
 
             coupon_code = {
-                "code": params._prefix + "-" + _code + "-" + params.suffix
+                'name': params.coupon_name,
+                'code': params._prefix + _code + params.suffix,
+                'discount_type': params.discount_type,
+                'discount_amount': params.discount_amount,
+                'max_uses': params.max_uses,
+                'num_uses': params.num_uses,
+                'expire_date': params.expire_date
             };
         } while (_.where(data, coupon_code).length > 0 || _.where(old_codes, coupon_code).length > 0);
 
         data.push(coupon_code);
     }
 
-    CsvService._write(data, function (filename){
+    // fill the csv files
+    var fields = ['name', 'code', 'discount_type', 'discount_amount', 'max_uses', 'num_uses', 'expire_date'];
+
+    CsvService._write(data, fields, function (filename){
       callback({
         "filename": filename, 
-        "data": data
+        "data": data,
+        'fields': fields
       });
     });
   }

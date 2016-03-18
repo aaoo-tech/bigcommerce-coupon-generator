@@ -6,7 +6,7 @@
         </div>
         <div class="tips">
             <img src="/images/i.svg">
-            <p>I aleady have coupons <a class="show-upload" href="">need to upload</a>.</p>
+            <p>I have my own coupons to <a class="show-upload up" href="#">Upload</a>.</p>
         </div>
         <div class="hide">
             <form action="/coupon/upload" class="dropzone"></form>
@@ -21,13 +21,13 @@
         <div class="form">
             <form action="/coupon/express" method="post">
                 <div class="entry">
-                    I want to generate <input class="col-30 center" type="number" name="number" min="0" placeholder="1000" style="margin: 0 10px;"/> coupons with.
+                    I want to generate <input class="col-30 center" type="number" name="number" min="0" placeholder="1000" style="margin: 0 10px;" value="10"/> coupons with.
                 </div>
                 <div class="entry">
                     <select name="discount">
-                        <option value="0">10% off discount</option>
-                        <option value="1">20% off discount</option>
-                        <option value="2">30% off discount</option>
+                        <option value="0">10 Dollars off Discount</option>
+                        <option value="0">10% off Discount</option>
+                        <option value="1">Free Shipping</option>
                     </select>
                 </div>
                 <div class="btn submit">
@@ -55,23 +55,23 @@
         <div class="form">
             <form action="" method="post">
                 <div class="entry">
-                    I want to generate <input class="col-30 center" type="number" name="number" min="0" placeholder="1000" style="margin: 0 10px;"/> coupons with<br />
+                    I want to generate <input class="col-30 center" type="number" name="number" min="0" placeholder="1000" style="margin: 0 10px;" value="10"/> coupons with<br />
                 </div>
                 <div class="entry name">
-                    <label for="">Coupon Name<i>*</i></label>
-                    <input id="" type="text" name="coupon_name" placeholder="An attractive aoupon code" />
+                    <label for="ipt-name" class="required">Coupon Name</label>
+                    <input id="ipt-name" type="text" name="coupon_name" required placeholder="An attractive coupon code name"/>
                 </div>
                 <div class="entry fl col-25 prefix">
-                    <label for="">Prefix</label>
-                    <input id="" type="text" name="_prefix" placeholder="ATTR-" />
+                    <label for="ipt-prefix">Prefix</label>
+                    <input id="ipt-prefix" type="text" name="_prefix" placeholder="ATTR-" class="center" />
                 </div>
                 <div class="entry fl col-10 lan">
-                    <label for="">Len<i>*</i></label>
-                    <input id="" type="number" min="0" max="20" name="len" placeholder="6" />
+                    <label for="ipt-len" class="required">Len</label>
+                    <input id="ipt-len" type="number" min="0" max="20" name="len" placeholder="6" value="8" class="center" required/>
                 </div>
                 <div class="entry fl col-40 type">
-                    <label for="">Type<i>*</i></label>
-                    <select name="_charset">
+                    <label for="select-hash-type" class="required">Type</label>
+                    <select id="select-hash-type" name="_charset">
                         <option value="1">Number Only</option>
                         <option value="2">Lowercase Letter Only</option>
                         <option value="3">Uppercase Letter Only</option>
@@ -79,8 +79,8 @@
                     </select>
                 </div>
                 <div class="entry fl col-25 sufix">
-                    <label for="">Suffix</label>
-                    <input id="" type="text" name="suffix" placeholder="-1" />
+                    <label for="ipt-suffix">Suffix</label>
+                    <input id="ipt-suffix" type="text" name="suffix" placeholder="-1" class="center"/>
                 </div>
                 <div class="clear preview">
                     <label>Preview: </label>
@@ -88,24 +88,27 @@
                     <div class="clear"></div>
                 </div>
                 <div class="entry">
-                    <label>Discount Type<i>*</i></label>
-                    <select class="fl col-70">
-                        <option value="0">x % Discount</option>
-                        <option value="1"></option>
+                    <label name="select-discount-type" class="required">Discount Type</label>
+                    <select id="select-discount-type" class="fl col-70" name="discount_type">
+                        <option value="0">Dollar amount off the order total</option>
+                        <option value="1">Dollor amount off each item in the order</option>
+                        <option value="2">Percentage off each item in the order</option>
+                        <option value="3">Dollar amount off the shipping total</option>
+                        <option value="4">Free shipping</option>
                     </select>
-                    <input class="col-30" type="number" name="discount_type" />
+                    <input class="col-30" type="number" name="discount_amount" value="10" class="center" />
                 </div>
                 <div class="entry">
-                    <label>Limt total number of uses</label>
-                    <input type="number" name="max_uses" placeholder="Leave it empty for no limit" />
+                    <label for="ipt-total-uses">Limt total number of uses</label>
+                    <input id="ipt-total-uses" type="number" name="max_uses" placeholder="Leave it empty for no limit" />
                 </div>
                 <div class="entry">
-                    <label>Limt number of uses per customer</label>
-                    <input type="number" name="num_uses" placeholder="Leave it empty for no limit" />
+                    <label for="ipt-uses-per-customer">Limt number of uses per customer</label>
+                    <input id="ipt-users-per-customer" type="number" name="num_uses" placeholder="Leave it empty for no limit" />
                 </div>
                 <div class="entry">
-                    <label>Expiry Date</label>
-                    <input type="date" name="expiry_date" />
+                    <label for="ipt-expiry-date">Expiry Date</label>
+                    <input id="ipt-expiry-date" type="date" name="expiry_date" />
                 </div>
                 <div class="btn submit">
                     <a href="">Generate!</a>

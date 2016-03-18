@@ -138,10 +138,7 @@
         var type=[  "90987461687315498651",
                     "fbhyapuapaswdbuheloi",
                     "JQWTIZXCG7QWEOIHAOSQ",
-                    "a6s4d9d7zsa1c6as874f",
-                    "JP2B46EVS6I76T6S2X4H",
-                    "JVyluBvMasPaisdIaBvI",
-                    "4OFQWRac3fh7aK75ASzx" ];
+                    "4OFQWRac3fh7aK75ASzx"];
         var type_text=type[prevset[2]]
         var text=type_text.substr(20-number);
         $('.preview p').html(""+prevset[0]+text+prevset[3]);

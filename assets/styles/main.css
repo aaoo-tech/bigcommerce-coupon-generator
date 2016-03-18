@@ -4,6 +4,7 @@ body { font-family: Geogia,Arial, Helvetica, sans-serif; font-size: 16px; ; line
 .clear { clear: both; }
 a:link,a:hover,a:active,a:visited { color: #0058FF; }
 .fl { float: left; }
+.up { text-transform: uppercase; }
 .center { text-align: center; }
 .clearfix:after { content:""; display:table; clear:both;}
 .clearfix { zoom:1; }
@@ -26,9 +27,8 @@ input[type="number"] {
 }
 
 input { width: 100%; padding: 10px; font-size: 18px; box-sizing:border-box; }
-select { width: 100%; padding: 10px; font-size: 18px; }
+select { width: 100%; padding: 10px; font-size: 18px; left: 0; }
 h1,h2 { font-weight: 400;}
-i { color: #f00; }
 
 .wrap { width: 500px; padding: 20px; margin: 50px auto 0; background-color: #fff; }
 .wrap section { margin-bottom: 50px; display: none; }
@@ -43,12 +43,13 @@ i { color: #f00; }
 .wrap .tips img { float: left; width: 24px; margin:0 8px 0 12px; }
 .wrap .tips p { line-height: 24px; }
 
-.wrap .form .entry { margin: 30px 0; }
+.wrap .form .entry { margin: 30px 0; position: relative; }
 .wrap .form .entry.fl { margin: 0 0 30px; }
 
 .wrap .form .preview p { padding: 10px; background-color: #cfcfcf; font-size: 20px; line-height: 20px; text-align: center; }
 
 .wrap .form label { display: block; margin-bottom: 8px; width: 100%; }
+.wrap .form label.required:after { content: '*'; color: #f00; }
 .wrap .form .btn { float: left; width: 50%; box-sizing:border-box; }
 .wrap .form .btn a { display: block; height: 50px; line-height: 50px; text-decoration: none; color: #fff; background-color: #387933; text-align: center; }
 .wrap .form .btn.submit a { background-color: #333979; }
