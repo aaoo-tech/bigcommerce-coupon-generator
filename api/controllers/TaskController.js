@@ -97,7 +97,8 @@
         Tasks.update({
             id: req.session.task_id
         },{
-            status: 1
+            status: 1,
+            category: params.category
         }).then(function(updated) {
             console.log(updated);
         }).catch(function(err) {

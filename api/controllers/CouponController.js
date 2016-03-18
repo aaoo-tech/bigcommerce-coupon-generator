@@ -40,16 +40,24 @@
         });
     },
     upload: function(req, res) {
-        console.log(req.allParams());
         req.file('csv_file').upload({dirname: './'},function (err, files) {
             // [TODO] check file type
+            console.log(files);
             if (err){
                 return res.serverError(err);
             }else{
-                return res.json({
-                    message: files.length + ' file(s) uploaded successfully!',
-                    files: files
-                });
+                // async.eachSeries(files, function(_file) {
+                //     var point = _file.filename.lastIndexOf(".");
+                //     var type = _file.filename.substr(point);
+                //     if(type == '.csv'){
+                        
+                //     }
+                // },function done() {
+                //     return res.json({
+                //         message: files.length + ' file(s) uploaded successfully!',
+                //         files: files
+                //     });
+                // });
             }
         });
     },
