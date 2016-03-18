@@ -10,31 +10,33 @@
     _ = require('underscore'),
     async = require('async'),
     path = require('path'),
+    nodemailer = require('nodemailer'),
     randomstring = require('randomstring');
  module.exports = {
   index: function (req,res){
-//     // req.session.user = {'id':7, 'email': '312313@qq.com'};
-//     CouponService.fetch(AuthService['hk'], {}, function (coupons){
-//         console.log(coupons);
+var nodemailer = require('nodemailer');
+    // req.session.user = {'id':7, 'email': '312313@qq.com'};
+    // CouponService.fetch(AuthService['hk'], {}, function (coupons){
+    //     console.log(coupons);
+    // });
+// CsvService._read('coupon-code-2016-03-15-hv78T8A.csv', function (codes) {
+//     // console.log(codes);
+//     // JSON.parse(codes)
+//     _.each(codes, function(_code){
+//         console.log(_code.code);
 //     });
-// // CsvService._read('coupon-code-2016-03-15-hv78T8A.csv', function (codes) {
-// //     // console.log(codes);
-// //     // JSON.parse(codes)
-// //     _.each(codes, function(_code){
-// //         console.log(_code.code);
-// //     });
-//       return res.json({
-//         message: 'codes'
-//       });
-// // });
-    res.writeHead(200, {'content-type': 'text/html'});
-    res.end(
-    '<form action="http://localhost:1337/index/upload" enctype="multipart/form-data" method="post">'+
-    '<input type="text" name="title"><br>'+
-    '<input type="file" name="avatar" multiple="multiple"><br>'+
-    '<input type="submit" value="Upload">'+
-    '</form>'
-    )
+      return res.json({
+        message: 'codes'
+      });
+// });
+    // res.writeHead(200, {'content-type': 'text/html'});
+    // res.end(
+    // '<form action="http://localhost:1337/index/upload" enctype="multipart/form-data" method="post">'+
+    // '<input type="text" name="title"><br>'+
+    // '<input type="file" name="avatar" multiple="multiple"><br>'+
+    // '<input type="submit" value="Upload">'+
+    // '</form>'
+    // )
   },
   upload: function  (req, res) {
     req.file('avatar').upload({dirname: path.resolve(sails.config.appPath, '/assets/images')},function (err, files) {
