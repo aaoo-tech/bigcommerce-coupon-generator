@@ -13,7 +13,7 @@
  module.exports = {
     create: function(req, res) {
         var params = req.allParams();
-        if(params.email.match([\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?) == null){
+        if(params.email.match(/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/g) == null){
             return res.json({
                 message: 'This is required.'
             });
