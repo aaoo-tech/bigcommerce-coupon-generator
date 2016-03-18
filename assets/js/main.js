@@ -149,7 +149,7 @@
 
     prev();
 
-    $('.tip a').click(function(){
+    $('.tips a').click(function(){
         $('.hide').slideDown(500);
         return false;
     });
