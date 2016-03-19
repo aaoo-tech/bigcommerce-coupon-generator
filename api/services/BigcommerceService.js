@@ -89,9 +89,9 @@ module.exports = {
 
     var _jsons = [];
     var _gets = function(_page) {
-      var _p = p;
+      var _p = p.slice();
       _p.push('page=' + _page);
-      console.log(p);
+      console.log(_p);
       var _path = util.format(auth + '?%s', _p.join('&'));
       // console.log(_path);
       _get(_path, function(response) {
