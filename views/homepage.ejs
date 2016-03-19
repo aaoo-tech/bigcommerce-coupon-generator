@@ -72,10 +72,9 @@
                 <div class="entry fl col-40 type">
                     <label for="select-hash-type" class="required">Type</label>
                     <select id="select-hash-type" name="_charset">
-                        <option value="1">Number Only</option>
-                        <option value="2">Lowercase Letter Only</option>
-                        <option value="3">Uppercase Letter Only</option>
-                        <option value="4">Alphanumeric</option>
+                    <% for (var i = 0, l = charsets.length; i < l; i++) { %>
+                        <option value="<%= i %>"><%= charsets[i].name %></option>
+                    <% } %>
                     </select>
                 </div>
                 <div class="entry fl col-25 sufix">
@@ -90,11 +89,9 @@
                 <div class="entry">
                     <label name="select-discount-type" class="required">Discount Type</label>
                     <select id="select-discount-type" class="fl col-70" name="discount_type">
-                        <option value="0">Dollar amount off the order total</option>
-                        <option value="1">Dollor amount off each item in the order</option>
-                        <option value="2">Percentage off each item in the order</option>
-                        <option value="3">Dollar amount off the shipping total</option>
-                        <option value="4">Free shipping</option>
+                    <% for (var i = 0, l = discount_types.length; i < l; i++) { %>
+                        <option value="<%= i %>"><%= discount_types[i].name %></option>
+                    <% } %>
                     </select>
                     <input class="col-30" type="number" name="discount_amount" value="10" class="center" />
                 </div>

@@ -8,6 +8,19 @@
 var  _ = require('underscore');
     
 module.exports = {
+  charsets: [
+    { name: 'Number Only', chars: '0123456789' },
+    { name: 'Lowercase Letter Only', chars: 'abcdefghijqlmnopqrstuvwxyz' },
+    { name: 'Uppercase Letter Only', chars: 'ABCDEFGHIJQLMNOPQRSTUVWXYZ' },
+    { name: 'Alphanumeric', chars: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJQLMNOPQRSTUVWXYZ0123456789' },
+  ],
+  discount_types: [
+    { name: 'Dollar amount off the order total' },
+    { name: 'Dollor amount off each item in the order' },
+    { name: 'Percentage off each item in the order' },
+    { name: 'Dollar amount off the shipping total' },
+    { name: 'Free shipping' },
+  ],
   fetch: function(bigcommerces, params, callback) {
     BigcommerceService.gets(bigcommerces, '/api/v2/coupons.json', params, function (data){
       callback(data);
@@ -15,24 +28,7 @@ module.exports = {
   },
   generate: function(params, old_codes, callback) {
     console.log(params);
-    switch(params._charset){
-        case 0:
-            // Number Only
-            _charset = '0123456789';
-            break;
-        case 1:
-            // Lowercase Letter Only
-            _charset = 'abcdefghijqlmnopqrstuvwxyz';
-            break;
-        //lowercase and number
-        case 2:
-            // Uppercase Letter Only
-            _charset = 'ABCDEFGHIJQLMNOPQRSTUVWXYZ';
-            break;
-        case 3:
-        default:
-            _charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJQLMNOPQRSTUVWXYZ0123456789';
-    }
+    _charset = this.charsets[params._charset].chars;
 
     // generate coupons
     var data = [];
@@ -63,8 +59,7 @@ module.exports = {
     var fields = ['name', 'code', 'discount_type', 'discount_amount', 'max_uses', 'num_uses', 'expire_date'];
 
     CsvService._write(data, fields, function (filename){
-      callback({
-        "filename": filename, 
+      callback(filename, {
         "data": data,
         'fields': fields
       });

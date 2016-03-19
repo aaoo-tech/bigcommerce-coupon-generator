@@ -5,8 +5,82 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
- var fs = require('fs');
+ var fs = require('fs'),
+     moment = require('moment');
+
  module.exports = {
+    valid_params: function (params) {
+        // check the cout
+        if (UtilityService.is_int(params.number) === false) {
+            return false;
+        }
+        params.number = +params.number;
+        if (params.number < 0 || params.number > 100000) {
+            return false;
+        }
+
+        // check the name
+        if (params.coupon_name.length > 30) { 
+            return false;
+        }
+
+        // check the prefix and suffix
+        if (params._prefix.length > 10 || params.suffix.length > 10) {
+            return false;
+        }
+
+        // check length
+        if (UtilityService.is_int(params.len) === false) {
+            return false;
+        }
+        params.len = +params.len;
+        if (params.len < 6 || params.len > 10){
+            return false;
+        }
+
+        // check the charset
+        if (UtilityService.is_int(params._charset) === false) {
+            return false;
+        }
+        params._charset = +params._charset;
+        if (params._charset < 0 || params._charset >= CouponService.charsets.length) {
+            return false;
+        }
+
+        // check discount type and discount amount
+        if (UtilityService.is_int(params.discount_type) === false) {
+            return false;
+        }
+        params.discount_type = +params.discount_type;
+        if (params.discount_type < 0 || params.discount_type >= CouponService.discount_types.length) {
+            return false;
+        }
+
+        // free shipping doesn't require parameters
+        if (params.discount_type < 4) {
+            if (UtilityService.is_int(params.discount_amount) === false) {
+                return false;
+            }
+            params.discount_amount = +params.discount_amount;
+        }
+
+        // max_uses
+        if (UtilityService.is_int(params.max_uses) === false) {
+            return false;
+        }
+
+        // num_uses
+        if (UtilityService.is_int(params.num_uses) === false) {
+            return false;
+        }
+
+        // expire date
+        if (moment(params.expiry_data).isValid() === false) {
+            return false;
+        }
+
+        return true;
+    },
     express: function(req, res) {
         var params = req.allParams();
         if (params.number.match(/^\d{1,6}$/g) == null) {
@@ -24,7 +98,7 @@
         params.coupon_name = 'Coupon by AAOO';
         params.max_uses = 1;
         params.num_uses = 1;
-        params.expire_date = '2100-01-01';
+        params.expiry_date = '2100-01-01';
 
         switch (params.discount) {
         case '0':
@@ -40,69 +114,46 @@
             params.discount_amount = 0;
         }
 
-        CouponService.generate(params, [], function(filename) {
-            console.log(filename);
-            req.session._rules = params;
-            req.session._filename = filename.filename;
-            console.log(req.session._filename);
+        if (this.valid_params(params) === false) {
             return res.json({
-                data: filename
+                success: false,
+                message: 'parameters not valid.'
+            });
+        }
+
+        CouponService.generate(params, [], function(filename, coupons) {
+            req.session._rules = params;
+            req.session._filename = filename;
+            return res.json({
+                success: true,
+                data: { filename: filename }
             });
         });
     },
     advanced: function(req, res) {
         var params = req.allParams();
         params.is_express = 0;
-        console.log(params);
-
-        // check the parameters
-        if (params.number.match(/^\d{1,6}$/g) == null) {
-            return res.json({
-                message: 'Number must be an integer between 1 and 100000.'
-            });
-        }
-        if(params.coupon_name.match(/^.{0,300}.*[^ ].*$/g) == null){
-            return res.json({
-                message: 'Coupon name must be between 1 and 300.'
-            });
-        }
-        if(params._prefix.length > 10 || params.suffix.length > 10){
-            return res.json({
-                message: 'The length of the prefix or suffix can not be more than 10.'
-            });
-        }
-        if(params.len < 6 || params.len > 20 || params.len.match(/^[1-9]\d*$/g) == null){
-            return res.json({
-                message: 'Length must be an integer between 6 and 20.'
-            });
-        }
-        // if(params.discount_type || discount_amount.match() == null){
-        //     return res.json({
-        //         message:
-        //     });
-        // }
-        if(params.max_uses.match(/^-?[1-9]\d*$/g) == null && params.max_uses != '' || params.num_uses.match(/^-?[1-9]\d*$/g) == null && params.num_uses != ''){
-            return res.json({
-                message: 'The max_uses and num_uses must be an integer.'
-            });
-        }
-        if(params.expire_date != '' && params.expire_date.match(/([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8])))/g) == null){
-            return res.json({
-                message: 'Expire date must be an date.'
-            });
-        }
-        if (params._prefix == '') { params._prefix = 'AA-'; }
-        if (params.suffix == '') { params.suffix = '-OO'; }
+        // if (params._prefix == '') { params._prefix = 'AA-'; }
+        // if (params.suffix == '') { params.suffix = '-OO'; }
         if (params.max_uses == '') { params.max_uses = -1; }
         if (params.num_uses == '') { params.num_uses = -1; }
-        if (_.isUndefined(params.expire_date)) { params.expire_date = '2100-01-01'; }
 
-        CouponService.generate(params, [], function(filename) {
+        if (_.isUndefined(params.expiry_date) === true) { params.expiry_date = '2100-01-01'; }
+        
+        if (this.valid_params(params) === false) {
+            return res.json({
+                success: false,
+                message: 'parameters not valid.'
+            });
+        }
+
+        CouponService.generate(params, [], function(filename, coupons) {
             console.log(filename);
             req.session._rules = params;
             req.session._filename = filename.filename;
             return res.json({
-                data: filename
+                success: true,
+                data: { filename: filename }
             });
         });
     },
