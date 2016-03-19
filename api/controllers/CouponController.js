@@ -20,7 +20,7 @@
         }
 
         // check the name
-        if (params.coupon_name.length > 30) { 
+        if (params.coupon_name.length <= 0 || params.coupon_name.length > 30) { 
             return false;
         }
 
@@ -83,11 +83,7 @@
     },
     express: function(req, res) {
         var params = req.allParams();
-        if (params.number.match(/^\d{1,6}$/g) == null) {
-            return res.json({
-                message: 'Number must be an integer between 1 and 100000.'
-            });
-        }
+        
         params._charset = 0;
         params._prefix = 'AA-';
         params.suffix = '-OO';
@@ -117,13 +113,14 @@
         if (this.valid_params(params) === false) {
             return res.json({
                 success: false,
-                message: 'parameters not valid.'
+                message: 'Parameters are not correctly set.'
             });
         }
 
         CouponService.generate(params, [], function(filename, coupons) {
             req.session._rules = params;
             req.session._filename = filename;
+            req.is_upload = 0;
             return res.json({
                 success: true,
                 data: { filename: filename }
@@ -143,7 +140,7 @@
         if (this.valid_params(params) === false) {
             return res.json({
                 success: false,
-                message: 'parameters not valid.'
+                message: 'Parameters are not correctly set.'
             });
         }
 
@@ -151,6 +148,7 @@
             console.log(filename);
             req.session._rules = params;
             req.session._filename = filename.filename;
+            req.is_upload = 0;
             return res.json({
                 success: true,
                 data: { filename: filename }
@@ -158,7 +156,7 @@
         });
     },
     upload: function(req, res) {
-        req.file('csv_file').upload({dirname: './'},function (err, files) {
+        req.file('csv_file').upload({ dirname: './' }, function (err, files) {
             // [TODO] check file type
             console.log(files);
             if (err){

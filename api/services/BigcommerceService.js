@@ -91,24 +91,24 @@ module.exports = {
     var _gets = function(_page) {
       var _p = p.slice();
       _p.push('page=' + _page);
-      console.log(_p);
+
       var _path = util.format(auth + '?%s', _p.join('&'));
-      // console.log(_path);
+      console.log(bigcommerce, _path);
       _get(_path, function(response) {
         if (response.length == 0) {
           callback(coupons);
           return;
         }
 
-        // console.log(response);
-
         var data = JSON.parse(response);
-        // console.log(_path);
-        if(data.error && data.error === true){
+        if (_.isUndefined(data[0]) == false && _.isUndefined(data[0].status) == false) {
           console.log('error');
-          callback(data);
+          callback({
+            error: data[0].message
+          });
           return;
         }
+        
         async.waterfall([
           function(_callback) {
             async.eachSeries(data, function(odd, __callback) {
