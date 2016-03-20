@@ -1,5 +1,9 @@
 (function($) {
   $(function() {
+    _.templateSettings = {
+        interpolate: /\{\{=(.+?)\}\}/g,
+        evaluate: /\{\{(.+?)\}\}/g,
+    };
 
     // express form
     $('body').on('click', '.quick .submit', function (event) {
@@ -75,7 +79,6 @@
                     type: 'POST',
                     beforeSend: function() { 
                         $.fancybox.showLoading(); 
-                        
                     }
                 }).done(function (response) {
                     $.fancybox.hideLoading();
@@ -83,10 +86,10 @@
                         Lobibox.alert('success', {
                             msg: 'Information has been correctly fetched.',
                             beforeClose: function($this) {
-                                $('.confirmation .text').html('<h2>Summary</h2><p><a href="">'+ response.data.had_codes +'</a> exsiting coupon codes are found.<br/>There are <a href="">'+ response.data.repeat_code +'</a> coupon codes duplicated. If you have used our coupon generator another <a href="">'+ response.data.another_code +'</a> valid coupons will bere-generated.Otherwise,we will skip duplicated ones anyway.</p><p><a href="">'+ response.data.category_len +'</a> categories are found as following:<br/>( Please leave them unchecked if you do not want to add any category restrictions.)</p>');
-                                for (var i = 0; i < response.data.categories.length; i++) {
-                                    $('.confirmation .form form .checkbox').append('<input type="checkbox" name="category[]" value="' + response.data.categories[i].id + '" /><label>' + response.data.categories[i].name + '</label>');
-                                }
+                                $('.confirmation .placeholder').html(
+                                    _.template($('#tpl-confirmation').html())(response.data)
+                                );
+                                
                                 $('section.upload').removeClass('active');
                                 $('section.confirmation').addClass('active');
                             }

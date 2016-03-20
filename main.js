@@ -75,5 +75,8 @@
 
     });
 
+    // customize selector
+    $('select').customSelect();
+
   });
 })(jQuery);

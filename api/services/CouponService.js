@@ -27,7 +27,6 @@ module.exports = {
     });
   },
   generate: function(params, old_codes, callback) {
-    console.log(params);
     _charset = this.charsets[params._charset].chars;
 
     // generate coupons

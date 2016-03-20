@@ -5,8 +5,7 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
  var _ = require('underscore'),
-     async = require('async'),
-     sleep = require('sleep');
+     async = require('async');
 
  module.exports = {
     valid_create: function(params) {
@@ -28,6 +27,7 @@
         return true;
     },
     create: function(req, res) {
+        console.log(req.session);
         var params = req.allParams();
 
         if (params.url.substr(0, 7) == 'http://') {
@@ -46,10 +46,12 @@
         }
 
         // [TODO] one website only allowed to run one task at the same time
+        // [TODO] check session
 
         async.waterfall([
             // create task
             function (cb) {
+                console.log(req.session);
                 Tasks.create({
                     'email': params.email,
                     'url': params.url,
@@ -59,7 +61,7 @@
                     'csv_filename': req.session._filename,
                     '_rules': JSON.stringify(req.session._rules),
 
-                    'is_upload': req.is_upload,
+                    'is_upload': req.session.is_upload,
                     'status': 0
                 }).then(function(task) {
                     req.session.task_id = task.id;
@@ -142,12 +144,19 @@
             }
         ], function(err, task, coupons, categories) {
             // prepare output
-            categories = categories.map(function(entry) {
-                return {
-                    id: entry.id,
-                    name: entry.name
-                };
-            });
+
+            if (_.isArray(categories) === true) {
+                categories = categories.map(function(entry) {
+                    return {
+                        id: entry.id,
+                        name: entry.name
+                    };
+                });
+            } else {
+                categories = [];
+            }
+
+            
 
             coupons = coupons.map(function(entry) {
                 return entry.code;

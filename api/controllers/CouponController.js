@@ -117,10 +117,12 @@
             });
         }
 
+        req.session.flag = '';
         CouponService.generate(params, [], function(filename, coupons) {
             req.session._rules = params;
             req.session._filename = filename;
-            req.is_upload = 0;
+            req.session.is_upload = 0;
+
             return res.json({
                 success: true,
                 data: { filename: filename }
@@ -144,11 +146,11 @@
             });
         }
 
+        req.session.flag = '';
         CouponService.generate(params, [], function(filename, coupons) {
-            console.log(filename);
-            req.session._rules = params;
-            req.session._filename = filename.filename;
-            req.is_upload = 0;
+            res.session._rules = params;
+            res.session._filename = filename.filename;
+            res.session.is_upload = 0;
             return res.json({
                 success: true,
                 data: { filename: filename }

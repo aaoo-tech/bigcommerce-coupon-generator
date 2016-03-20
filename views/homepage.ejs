@@ -157,20 +157,30 @@
         </div>
         <div class="tips">
             <img src="/images/i.svg">
-            <p>Great Big Conirmerce.</p>
+            <p>Please review and confirm the following information.</p>
         </div>
-        <div class="text">
-
-        </div>
-        <div class="form">
-            <form action="" method="post">
-            <div class="entry checkbox">
+        <div class="placeholder"> </div>
+        <script id="tpl-confirmation" type="text/template">
+            <div class="text">
+                <h2>Summary</h2>
+                <p><u>{{= coupons.existed }}</u> exsiting coupon codes are found. There are <u>{{= coupons.duplicated }}</u> coupon codes duplicated. If you have used our coupon generator another <u>{{= coupons.duplicated }}</u> valid coupons will be re-generated.Otherwise,we will skip duplicated ones anyway.</p>
+                <p><u>{{= categories.length }}</u> categories are found as following: (Please leave them unchecked if you do not want to add any category restrictions.)</p>
             </div>
-            <div class="btn submit">
-                <a href="#">Go!</a>
+            <div class="form">
+                <form action="" method="post">
+                <div class="entry checkbox">
+                {{ _.each(categories, function(category) { }}
+                <input id="category-{{= category.id }}" type="checkbox" name="category[]" value="{{= category.id }}" />
+                <label for="category-{{= category.id }}">{{= category.name }}</label>
+                {{ }); }}
+                </div>
+                <div class="btn submit">
+                    <a href="#">Go!</a>
+                </div>
+                </form>
             </div>
-            </form>
-        </div>
+        </script>
+        
     </section>
     <section class="successful clearfix">
         <div class="title">
