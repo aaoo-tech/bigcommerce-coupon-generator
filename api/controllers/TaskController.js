@@ -156,8 +156,6 @@
                 categories = [];
             }
 
-            
-
             coupons = coupons.map(function(entry) {
                 return entry.code;
             });
@@ -188,18 +186,58 @@
             
         });
     },
+    test: function(req, res) {
+        var params = req.allParams();
+        console.log(sails.config.email.template.confirmation);
+
+        EmailService.send(
+            sails.config.email.template.confirmation,
+            {
+                'from': 'AAOO Tech Ltd. <contact@aaoo-tech.com>',
+                'to': params.to,
+                'subject': 'Test from AAOO'
+            },
+            function(err, info) {
+                console.log(err);
+                console.log(info);
+            }
+        );
+    },
     confirm: function(req, res) {
         var params = req.allParams();
-        console.log(params);
-        Tasks.update({
-            id: req.session.task_id
-        },{
-            status: 1,
-            category: params.category
-        }).then(function(updated) {
-            console.log(updated);
-        }).catch(function(err) {
-            console.log(err);
+
+        // [TODO] check parameters
+
+        async.waterfall([
+            function(cb) {
+                // update confirmation
+                Tasks.update({
+                    id: req.session.task_id
+                },{
+                    status: 1,
+                    category: params.category
+                }).then(function(updated) {
+                    cb(null);
+                }).catch(function(err) {
+                    cb('Unknown Error Occured');
+                });
+            },
+            function(cb) {
+                // [TODO] send email
+            }
+        ], function(err) {
+            // prepare the output
+            if (_.isUndefined(err) === false) {
+                res.json({
+                    success: false,
+                    message: err
+                });
+            } else {
+                res.json({
+                    success: true,
+                    data: {}
+                });
+            }
         });
     }
  }
