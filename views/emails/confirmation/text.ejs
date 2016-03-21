@@ -1,1 +1,21 @@
-Just for test.
+Dear ,
+
+Thanks for using the coupon generation tool from AAOO Tech. We'd like to inform you that your task with task number <%= task.id %> has been confirmed. 
+
+Please find the details of your task below:
+
+Website URL: <%= task.url %>
+Coupon CSV file: <%= task.filename %>
+<% if (task.categories.length > 0) { %>
+Category: 
+<% _.each(task.categories, function(category) { %>
+<%= category %>
+<% }) %>
+<% } else { %>
+Category: All
+<% } %>
+
+In case you have any questions regarding your task, please visit our FAQ or contact us by email at contact@aaoo-tech.com (Monday to Friday, 9AM - 6PM HKT).
+
+Warm Regards,
+AAOO Team

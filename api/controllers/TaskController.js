@@ -216,14 +216,29 @@
                 },{
                     status: 1,
                     category: params.category
-                }).then(function(updated) {
-                    cb(null);
+                }).then(function(task) {
+                    cb(null, task);
                 }).catch(function(err) {
                     cb('Unknown Error Occured');
                 });
             },
-            function(cb) {
-                // [TODO] send email
+            function(task, cb) {
+                task.categories = task.categories.split(',');
+                task.filename = '/coupon/download?filename=' + task.csv_filename;
+
+                EmailService.send(
+                    sails.config.email.template.confirmation,
+                    {
+                        'from': 'AAOO Tech Ltd. <contact@aaoo-tech.com>',
+                        'to': task.email,
+                        'subject': 'Task Confirmation #' + task.id + ' from AAOO Tech'
+                    }, {
+                        task: task,
+                    }
+                    function(err, info) {
+
+                    }
+                );
             }
         ], function(err) {
             // prepare the output

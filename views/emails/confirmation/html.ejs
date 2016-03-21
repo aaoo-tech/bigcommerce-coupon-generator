@@ -1,1 +1,38 @@
-Just for test.
+<table>
+	<tr>
+		<td>Dear ,</td>
+	</tr>
+	<tr>
+		<td>Thanks for using the coupon generation tool from AAOO Tech. We'd like to inform you that your task with task number <%= task.id %> has been confirmed. </td>
+	</tr>
+	<tr>
+		<td>Please find the details of your task below:</td>
+	</tr>
+	<tr>
+		<td>Website URL: <%= task.url %></td>
+	</tr>
+	<tr>
+		<td>Coupon CSV file: <%= task.filename %></td>
+	</tr>
+	<tr>
+		<td>
+			<% if (task.categories.length > 0) { %>
+			Category: 
+			<% _.each(task.categories, function(category) { %>
+			<%= category %><br>
+			<% }) %>
+			<% } else { %>
+			Category: All
+			<% } %>
+		</td>
+	</tr>
+	<tr>
+		<td>In case you have any questions regarding your task, please visit our FAQ or contact us by email at contact@aaoo-tech.com (Monday to Friday, 9AM - 6PM HKT).</td>
+	</tr>
+	<tr>
+		<td>
+			Warm Regards,<br>
+			AAOO Team
+		</td>
+	</tr>
+</table>

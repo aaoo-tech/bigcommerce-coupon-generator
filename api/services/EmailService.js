@@ -16,7 +16,7 @@ module.exports = {
     templateSender({
       to: params.to,
       subject: params.subject
-    }, {}, function(err, info) {
+    }, params, function(err, info) {
       cb(err, info);
     });
   }
