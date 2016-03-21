@@ -207,6 +207,11 @@
         var params = req.allParams();
 
         // [TODO] check parameters
+        if (_.isUndefined(params.category) == true) {
+        	params.category = "";
+		}
+
+		console.log(params.category);
 
         async.waterfall([
             function(cb) {
@@ -217,32 +222,35 @@
                     status: 1,
                     category: params.category
                 }).then(function(task) {
-                    cb(null, task);
+                    cb(null, task[0]);
                 }).catch(function(err) {
-                    cb('Unknown Error Occured');
+                    cb(err);
                 });
             },
             function(task, cb) {
-                task.categories = task.categories.split(',');
+            	console.log(task);
+                task.categories = task.category.split(',');
                 task.filename = '/coupon/download?filename=' + task.csv_filename;
+
+                console.log(task);
 
                 EmailService.send(
                     sails.config.email.template.confirmation,
                     {
                         'from': 'AAOO Tech Ltd. <contact@aaoo-tech.com>',
                         'to': task.email,
-                        'subject': 'Task Confirmation #' + task.id + ' from AAOO Tech'
-                    }, {
-                        task: task,
-                    }
+                        'subject': 'Task Confirmation #' + task.id + ' from AAOO Tech',
+                        'task': task
+					},
                     function(err, info) {
-
+                    	console.log(info);
+                    	cb(null, task);
                     }
                 );
             }
         ], function(err) {
             // prepare the output
-            if (_.isUndefined(err) === false) {
+            if (_.isUndefined(err) === false && _.isNull(false) === false) {
                 res.json({
                     success: false,
                     message: err

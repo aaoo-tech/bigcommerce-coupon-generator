@@ -4,8 +4,8 @@ Thanks for using the coupon generation tool from AAOO Tech. We'd like to inform 
 
 Please find the details of your task below:
 
-Website URL: <%= task.url %>
-Coupon CSV file: <%= task.filename %>
+Website URL: https://<%= task.url %>
+Coupon CSV file: http://coupon.aaoo-tech.com<%= task.filename %>
 <% if (task.categories.length > 0) { %>
 Category: 
 <% _.each(task.categories, function(category) { %>
