@@ -51,7 +51,6 @@
         async.waterfall([
             // create task
             function (cb) {
-                console.log(req.session);
                 Tasks.create({
                     'email': params.email,
                     'url': params.url,
