@@ -109,19 +109,27 @@
     $('body').on('click', '.confirmation .submit', function (event){
         $form = $(event.target).closest('form');
         var _data = $form.serializeObject();
-        console.log(_data);
+
         $.ajax({
             url: '/task/confirm',
             data: _data,
             type: 'POST',
-            beforeSend: function() {
-                // console.log('va');
+            beforeSend: function() { $.fancybox.showLoading(); }
+        }).done(function (response) {
+            $.fancybox.hideLoading();
+            if (response.success == true) {
+                Lobibox.alert('success', {
+                    msg: 'Your task has been confirmed and will receive a confirmation email shortly.',
+                    beforeClose: function($this) {
+                        $('section.confirmation').removeClass('active');
+                        $('section.successful').addClass('active');
+                    }
+                });
+            } else {
+                Lobibox.alert('error', {
+                    msg: response.message
+                });
             }
-        }).done(function (response){
-            alert('Done!');
-            console.log(response);
-            // $('section.upload').removeClass('active');
-            // $('section.confirmation').addClass('active');
         });
         return false;
     });
@@ -145,42 +153,40 @@
     //     return false;
     // });
 
-    var prevset=["","6",0,""];
-    $('body').on('change','.advanced .prefix input',function(){
-        prevset[0]=$(this).val();
-        prev();
-    });
-    $('body').on('change','.advanced .lan input',function(){
-        prevset[1]=$(this).val();
-        if ($(this).val()<6||$(this).val()>20) {
-            alert("Please set the 'Lan' greater than 6 and less than 20.");
-        };
-        prev();
-    });
-    $('body').on('change','.advanced .type select',function(){
-        prevset[2]=$(this).find('option:selected').index();
-        prev();
-    });
-    $('body').on('change','.advanced .sufix input',function(){
-        prevset[3]=$(this).val();
-        prev();
-    });
+    // preset
+    var generate_coupon = function(set_id, prefix, suffix, len) {
+        var charsets = [
+            '0123456789',
+            'abcdefghijqlmnopqrstuvwxyz',
+            'ABCDEFGHIJQLMNOPQRSTUVWXYZ',
+            'abcdefghijklmnopqrstuvwxyzABCDEFGHIJQLMNOPQRSTUVWXYZ0123456789'
+        ];
 
-    
-    var prev=function(){
+        var text = '';
+        for (var i = 0; i < len; i++) {
+            text += charsets[set_id].charAt(Math.floor(Math.random() * charsets[set_id].length));
+        }
 
-        var number=parseInt(prevset[1]);
-        var type=[  "90987461687315498651",
-                    "fbhyapuapaswdbuheloi",
-                    "JQWTIZXCG7QWEOIHAOSQ",
-                    "4OFQWRac3fh7aK75ASzx"];
-        var type_text=type[prevset[2]]
-        var text=type_text.substr(20-number);
-        $('.preview p').html(""+prevset[0]+text+prevset[3]);
+        return prefix + text + suffix;
     };
 
-    prev();
+    var refresh_coupon = function() {
+        var set_id = $('#select-hash-type').val(),
+            len = $('#ipt-len').val(),
+            prefix = $('#ipt-prefix').val(),
+            suffix = $('#ipt-suffix').val();
 
+        $('.preview p').html(generate_coupon(set_id, prefix, suffix, len));
+    };
+
+    $('body').on('change', '.advanced .prefix input', refresh_coupon);
+    $('body').on('change', '.advanced .lan input', refresh_coupon);
+    $('body').on('change', '.advanced .type select', refresh_coupon);
+    $('body').on('change', '.advanced .sufix input', refresh_coupon);
+
+    refresh_coupon();
+    
+    // upload
     $('a.show-upload').click(function(){
         $('.hide').slideDown(500);
         return false;
@@ -203,6 +209,7 @@
         }
     });
 
+    // express and advanced switch
     $('body').on('click','.quick .form .change a',function(){
         $('section.quick').removeClass('active');
         $('section.advanced').addClass('active');
@@ -214,10 +221,8 @@
         $('section.quick').addClass('active');
         return false;
     });
-    // $('body').on('click','section .form .submit a',function(){
-
-    // });
-
+    
+    // customize select look and feel
     $('section.quick select').customSelect();
 
   });

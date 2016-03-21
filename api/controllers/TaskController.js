@@ -186,32 +186,13 @@
             
         });
     },
-    test: function(req, res) {
-        var params = req.allParams();
-        console.log(sails.config.email.template.confirmation);
-
-        EmailService.send(
-            sails.config.email.template.confirmation,
-            {
-                'from': 'AAOO Tech Ltd. <contact@aaoo-tech.com>',
-                'to': params.to,
-                'subject': 'Test from AAOO'
-            },
-            function(err, info) {
-                console.log(err);
-                console.log(info);
-            }
-        );
-    },
     confirm: function(req, res) {
         var params = req.allParams();
 
         // [TODO] check parameters
         if (_.isUndefined(params.category) == true) {
-        	params.category = "";
-		}
-
-		console.log(params.category);
+            params.category = "";
+        }
 
         async.waterfall([
             function(cb) {
@@ -228,11 +209,8 @@
                 });
             },
             function(task, cb) {
-            	console.log(task);
                 task.categories = task.category.split(',');
                 task.filename = '/coupon/download?filename=' + task.csv_filename;
-
-                console.log(task);
 
                 EmailService.send(
                     sails.config.email.template.confirmation,
@@ -241,10 +219,10 @@
                         'to': task.email,
                         'subject': 'Task Confirmation #' + task.id + ' from AAOO Tech',
                         'task': task
-					},
+                    },
                     function(err, info) {
-                    	console.log(info);
-                    	cb(null, task);
+                        console.log(info);
+                        cb(null, task);
                     }
                 );
             }
