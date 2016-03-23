@@ -19,10 +19,13 @@ module.exports = {
         });
     },
     _read: function(filename, callback) {
-        var data = csv2json.csvtojson('assets/download/' + filename);
-        callback(data);
-        // fs.readFile('assets/download/' + filename, 'utf8', function(err, data) {
-        //     callback(data);
-        // });
+        fs.stat('assets/download/' + filename, function(err, stat) {
+            if(err == null && stat.isFile()) {
+                var data = csv2json.csvtojson('assets/download/' + filename);
+                callback(data);
+            }else{
+                callback(false);
+            }
+        });
     }
 }

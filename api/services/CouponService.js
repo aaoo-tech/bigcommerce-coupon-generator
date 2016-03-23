@@ -49,7 +49,8 @@ module.exports = {
                 'num_uses': params.num_uses,
                 'expire_date': params.expire_date
             };
-        } while (_.where(data, coupon_code).length > 0 || _.where(old_codes, coupon_code).length > 0);
+        } while (_.where(data, {code: coupon_code.code}).length > 0 || _.where(old_codes, {code: coupon_code.code}).length > 0);
+        // while (_.where(data, coupon_code).length > 0 || _.where(old_codes, coupon_code).length > 0);
 
         data.push(coupon_code);
     }
