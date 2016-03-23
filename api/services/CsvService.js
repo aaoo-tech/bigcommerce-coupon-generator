@@ -5,6 +5,7 @@
     _ = require('underscore'),
     async = require('async'),
     randomstring = require('randomstring');
+    var base_path = 'assets/download/';
 module.exports = {
     _write: function(data, fields, callback) {
         // var fields = ['code'];
@@ -13,15 +14,15 @@ module.exports = {
                 console.log(err);
             }
             var filename = 'coupon-code-' + moment().format('YYYY-MM-DD') + '-' + randomstring.generate(7) + ".csv";
-            fs.writeFile('assets/download/' + filename, csv, function(err) {
+            fs.writeFile(base_path + filename, csv, function(err) {
                 callback(filename);
             });
         });
     },
     _read: function(filename, callback) {
-        fs.stat('assets/download/' + filename, function(err, stat) {
+        fs.stat(base_path + filename, function(err, stat) {
             if(err == null && stat.isFile()) {
-                var data = csv2json.csvtojson('assets/download/' + filename);
+                var data = csv2json.csvtojson(base_path + filename);
                 callback(data);
             }else{
                 callback(false);

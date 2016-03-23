@@ -6,7 +6,10 @@
  */
 
  var fs = require('fs'),
-     moment = require('moment');
+    moment = require('moment'),
+    async = require('async'),
+    csv2json = require('csv2json-convertor'),
+    randomstring = require('randomstring');
 
  module.exports = {
     valid_params: function (params) {
@@ -148,9 +151,9 @@
 
         req.session.flag = '';
         CouponService.generate(params, [], function(filename, coupons) {
-            res.session._rules = params;
-            res.session._filename = filename.filename;
-            res.session.is_upload = 0;
+            req.session._rules = params;
+            req.session._filename = filename.filename;
+            req.session.is_upload = 0;
             return res.json({
                 success: true,
                 data: { filename: filename }
@@ -160,22 +163,44 @@
     upload: function(req, res) {
         req.file('csv_file').upload({ dirname: './' }, function (err, files) {
             // [TODO] check file type
-            console.log(files);
+            // console.log(files[0].filename);
             if (err){
                 return res.serverError(err);
             }else{
-                // async.eachSeries(files, function(_file) {
-                //     var point = _file.filename.lastIndexOf(".");
-                //     var type = _file.filename.substr(point);
-                //     if(type == '.csv'){
-                        
-                //     }
-                // },function done() {
-                //     return res.json({
-                //         message: files.length + ' file(s) uploaded successfully!',
-                //         files: files
-                //     });
-                // });
+                var point = files[0].filename.lastIndexOf(".");
+                var type = files[0].filename.substr(point);
+                if(type == '.csv'){
+                    // var readable = fs.createReadStream( files[0].fd);
+                    // var _filename = 'coupon-code-' + moment().format('YYYY-MM-DD') + '-' + randomstring.generate(7) + ".csv";
+                    // var writable = fs.createWriteStream( 'assets/download/' + _filename);
+                    // readable.pipe( writable );
+                    var _filename = 'coupon-code-' + moment().format('YYYY-MM-DD') + '-' + randomstring.generate(7) + ".csv";
+                    var data = csv2json.csvtojson(files[0].fd);
+                    var fields = ['name', 'code', 'discount_type', 'discount_amount', 'max_uses', 'num_uses', 'expire_date'];
+                    async.eachSeries(data, function(_coupon_code, _coupon_code_callback){
+                        if(data.category && data.category != ''){
+
+                        }else{
+
+                        }
+                        _coupon_code_callback();
+                    }, function done() {
+                        CsvService._write(data, fields, function (filename){
+                        });
+                    });
+                    // req.session._rules = [];
+                    // req.session._filename = _filename;
+                    // req.session.is_upload = 1;
+                    // return res.json({
+                    //     success: true,
+                    //     data: { filename: _filename }
+                    // });
+                }else{
+                    return res.json({
+                        success: false,
+                        data: ''
+                    });
+                }
             }
         });
     },

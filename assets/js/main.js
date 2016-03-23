@@ -52,7 +52,7 @@
                     msg: 'Your coupon codes are successfully generated.',
                     beforeClose: function($this) {
                         $(".upload .tips a").attr('href', "/coupon/download?filename=" + response.data.filename);
-                        $('section.express').removeClass('active');
+                        $('section.advanced').removeClass('active');
                         $('section.upload').addClass('active');
                     }
                 });
@@ -198,13 +198,18 @@
         maxFilesize: 512,
         acceptedFiles: ".csv,.txt,.doc,.docx,.xls",
         paramName: "csv_file",
+        maxFiles: 1,
         //addRemoveLinks: true,
         init: function() {
             this.on("success", function(file) {
+                console.log(file);
                 var para=document.createElement("p");
                 var node=document.createTextNode("OK!");
                 para.appendChild(node);
                 file.previewTemplate.appendChild(para);
+                $('section.advanced').removeClass('active');
+                $('section.quick').removeClass('active');
+                $('section.upload').addClass('active');
             })
         }
     });
