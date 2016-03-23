@@ -220,14 +220,13 @@
                         'task': task
                     },
                     function(err, info) {
-                        console.log(info);
                         cb(null, task);
                     }
                 );
             }
         ], function(err) {
             // prepare the output
-            if (_.isUndefined(err) === false && _.isNull(false) === false) {
+            if (_.isUndefined(err) === false && _.isNull(err) === false) {
                 res.json({
                     success: false,
                     message: err
