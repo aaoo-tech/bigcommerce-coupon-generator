@@ -94,27 +94,46 @@ module.exports = {
                 if(repeat_code.length > 0){
                   CouponService.generate(_task._rules, _task.coupons, function(csv_filename, coupon_codes) {
                     async.eachSeries(coupon_codes.data, function(_coupon_code, _coupon_code_callback){
-                        BigCommerceService.create({
-                          username: _task.username,
-                          host: _task.url,
-                          token: _task.token
-                        }, {
-                            'name': _task._rules.coupon_name,
-                            'type': _task._rules.discount_type,
-                            'code': _code.code,
-                            'amount': _task._rules.discount_amount,
-                            'enabled': true,
-                            'applies_to': {
-                                'entity': 'categories',
-                                'ids': '[' + _task.category + ']'
-                            },
-                            'max_uses': _task._rules.max_uses,
-                            'num_uses' _task._rules.num_uses,
-                            },
-                        }, function (response){
-                          coupon_code_callback();
-                          console.log(response.id + 'is created coupon repeat');
-                        });
+                      if(_task.is_upload == 0){
+                        var _create_params = {
+                          'name': _task._rules.coupon_name,
+                          'type': _task._rules.discount_type,
+                          'code': _coupon_code.code,
+                          'amount': _task._rules.discount_amount,
+                          'enabled': true,
+                          'applies_to': {
+                              'entity': 'categories',
+                              'ids': '[' + _task.category + ']'
+                          },
+                          'max_uses': _task._rules.max_uses,
+                          'num_uses' _task._rules.num_uses,
+                          },
+                        }
+                      }else{
+                        var _create_params = {
+                          'name': _coupon_code.name,
+                          'type': _coupon_code.discount_type,
+                          'code': _coupon_code.code,
+                          'amount': _coupon_code.discount_amount,
+                          'enabled': true,
+                          'applies_to': {
+                              'entity': 'categories',
+                              'ids': '[' + _coupon_code.category + ']'
+                          },
+                          'max_uses': _coupon_code._rules.max_uses,
+                          'num_uses' _coupon_code._rules.num_uses,
+                          },
+                        }
+                      }
+                      BigCommerceService.create({
+                        username: _task.username,
+                        host: _task.url,
+                        token: _task.token
+                      }, _create_params,
+                      }, function (response){
+                        coupon_code_callback();
+                        console.log(response.id + 'is created coupon repeat');
+                      });
                     }, function done (){
                       Tasks.update({
                         id: _task.id
