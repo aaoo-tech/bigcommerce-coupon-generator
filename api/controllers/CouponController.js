@@ -120,12 +120,14 @@
             });
         }
 
-        req.session.flag = '';
-        CouponService.generate(params, [], function(filename, coupons) {
-            req.session._rules = params;
-            req.session._filename = filename;
-            req.session.is_upload = 0;
+        req.session._rules = params;
+        req.session.is_upload = 0;
 
+        var codes = CouponService.generate(params, []);
+        var fields = ['name', 'code', 'discount_type', 'discount_amount', 'max_uses', 'num_uses', 'expire_date'];
+
+        CsvService._write(codes, fields, function(filename) {
+            req.session._filename = filename;
             return res.json({
                 success: true,
                 data: { filename: filename }
@@ -149,11 +151,14 @@
             });
         }
 
-        req.session.flag = '';
-        CouponService.generate(params, [], function(filename, coupons) {
-            req.session._rules = params;
+        req.session._rules = params;
+        req.session.is_upload = 0;
+
+        var codes = CouponService.generate(params, []);
+        var fields = ['name', 'code', 'discount_type', 'discount_amount', 'max_uses', 'num_uses', 'expire_date'];
+
+        CsvService._write(codes, fields, function(filename) {
             req.session._filename = filename.filename;
-            req.session.is_upload = 0;
             return res.json({
                 success: true,
                 data: { filename: filename }

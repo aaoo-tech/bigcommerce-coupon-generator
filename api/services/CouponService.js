@@ -26,7 +26,7 @@ module.exports = {
       callback(data);
     });
   },
-  generate: function(params, old_codes, callback) {
+  generate: function(params, old_codes) {
     _charset = this.charsets[params._charset].chars;
 
     // generate coupons
@@ -54,6 +54,8 @@ module.exports = {
 
         data.push(coupon_code);
     }
+
+    return data;
 
     // fill the csv files
     var fields = ['name', 'code', 'discount_type', 'discount_amount', 'max_uses', 'num_uses', 'expire_date'];
