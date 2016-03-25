@@ -197,18 +197,18 @@ console.log(req.session);
                                 });
                             });
                         }else{
-                            // console.log('no');
-                            // return res.json({
-                            //     success: false,
-                            //     data: ''
-                            // });
+                            console.log('no');
+                            return res.json({
+                                success: false,
+                                data: ''
+                            });
                         }
                     });
                 }else{
-                    // return res.json({
-                    //     success: false,
-                    //     data: ''
-                    // });
+                    return res.json({
+                        success: false,
+                        data: ''
+                    });
                 }
             }
         });
