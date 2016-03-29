@@ -179,27 +179,36 @@
                     // var _filename = 'coupon-code-' + moment().format('YYYY-MM-DD') + '-' + randomstring.generate(7) + ".csv";
                     // var writable = fs.createWriteStream( 'assets/download/' + _filename);
                     // readable.pipe( writable );
+                    var effective_codes = [];
                     var _filename = 'coupon-code-' + moment().format('YYYY-MM-DD') + '-' + randomstring.generate(7) + ".csv";
                     var data = csv2json.csvtojson(files[0].fd);
-                    var fields = ['name', 'code', 'discount_type', 'discount_amount', 'max_uses', 'num_uses', 'expire_date'];
+                    var fields = ['name', 'code', 'discount_type', 'discount_amount', 'max_uses', 'num_uses', 'expire_date', 'category'];
                     async.eachSeries(data, function(_coupon_code, _coupon_code_callback){
-                        if(data.category && data.category != ''){
-
-                        }else{
-
+                        if(_coupon_code.category && _coupon_code.category != '' && _coupon_code.code && _coupon_code.code != ''){
+                            effective_codes.push(_coupon_code);
                         }
                         _coupon_code_callback();
                     }, function done() {
-                        CsvService._write(data, fields, function (filename){
-                        });
+                        console.log(effective_codes);
+                        if(effective_codes.length > 0){
+                            CsvService._write(data, fields, function (filename){
+                                console.log('yes');
+                                req.session._rules = [];
+                                req.session._filename = _filename;
+                                req.session.is_upload = 1;
+                                return res.json({
+                                    success: true,
+                                    data: { filename: _filename }
+                                });
+                            });
+                        }else{
+                            console.log('no');
+                            return res.json({
+                                success: false,
+                                data: ''
+                            });
+                        }
                     });
-                    // req.session._rules = [];
-                    // req.session._filename = _filename;
-                    // req.session.is_upload = 1;
-                    // return res.json({
-                    //     success: true,
-                    //     data: { filename: _filename }
-                    // });
                 }else{
                     return res.json({
                         success: false,

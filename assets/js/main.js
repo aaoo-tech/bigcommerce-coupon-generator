@@ -205,15 +205,21 @@
         maxFiles: 1,
         //addRemoveLinks: true,
         init: function() {
-            this.on("success", function(file) {
-                console.log(file);
-                var para=document.createElement("p");
-                var node=document.createTextNode("OK!");
-                para.appendChild(node);
-                file.previewTemplate.appendChild(para);
-                $('section.advanced').removeClass('active');
-                $('section.quick').removeClass('active');
-                $('section.upload').addClass('active');
+            this.on("success", function(file, res) {
+                if(res.success === true){
+                    var para=document.createElement("p");
+                    var node=document.createTextNode("OK!");
+                    para.appendChild(node);
+                    file.previewTemplate.appendChild(para);
+                    $('section.advanced').removeClass('active');
+                    $('section.quick').removeClass('active');
+                    $('section.upload').addClass('active');
+                }else{
+                    var para=document.createElement("p");
+                    var node=document.createTextNode("NO!");
+                    para.appendChild(node);
+                    file.previewTemplate.appendChild(para);
+                }
             })
         }
     });
