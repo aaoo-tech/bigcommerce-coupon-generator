@@ -10,11 +10,12 @@
         var $form = $(event.target).closest('form'),
             _data = $form.serializeObject();
         
+        $.fancybox.showLoading();
         $.ajax({
             url: '/coupon/express',
             data: _data,
             type: 'POST',
-            beforeSend: function() { $.fancybox.showLoading(); }
+            // beforeSend: function() { $.fancybox.showLoading(); }
         }).done(function (response){
             $.fancybox.hideLoading(); 
             if (response.success == true) {
@@ -40,11 +41,13 @@
     $('body').on('click', '.advanced .submit', function (event){
         var $form = $(event.target).closest('form'),
             _data = $form.serializeObject();
+
+        $.fancybox.showLoading();
         $.ajax({
             url: '/coupon/advanced',
             data: _data,
             type: 'POST',
-            beforeSend: function() { $.fancybox.showLoading(); }
+            // beforeSend: function() { $.fancybox.showLoading(); }
         }).done(function (response) {
             $.fancybox.hideLoading(); 
             if (response.success == true) {
@@ -67,19 +70,19 @@
 
     // submit website information
     $('body').on('click', '.upload .submit', function (event){
-        $form = $(event.target).closest('form');
-        var _data = $form.serializeObject();
+        var $form = $(event.target).closest('form'),
+            _data = $form.serializeObject();
         
         Lobibox.alert('info', {
             msg: 'It will take some time for us to validate your API token and fetch coupons\' and categories\' information.',
             beforeClose: function($this) {
+
+                $.fancybox.showLoading();
                 $.ajax({
                     url: '/task/create',
                     data: _data,
                     type: 'POST',
-                    beforeSend: function() { 
-                        $.fancybox.showLoading(); 
-                    }
+                    // beforeSend: function() { $.fancybox.showLoading(); }
                 }).done(function (response) {
                     $.fancybox.hideLoading();
                     if (response.success == true) {
@@ -107,14 +110,15 @@
 
     // create task with website info
     $('body').on('click', '.confirmation .submit', function (event){
-        $form = $(event.target).closest('form');
-        var _data = $form.serializeObject();
+        var $form = $(event.target).closest('form'),
+            _data = $form.serializeObject();
 
+        $.fancybox.showLoading();
         $.ajax({
             url: '/task/confirm',
             data: _data,
             type: 'POST',
-            beforeSend: function() { $.fancybox.showLoading(); }
+            // beforeSend: function() { $.fancybox.showLoading(); }
         }).done(function (response) {
             $.fancybox.hideLoading();
             if (response.success == true) {

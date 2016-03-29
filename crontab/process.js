@@ -1,12 +1,14 @@
-var fs = require('fs'),
-    json2csv = require('json2csv'),
-    moment = require('moment'),
-    randomstring = require('randomstring');
+var _ = require('underscore'),
+    async = require('async'),
+    sleep = require('sleep');
+
+var SLEEP_INTERVAL = 2;
 
 module.exports = {
   run: function() {
     async.waterfall([
-      function(cb) { // check whether cron job is running
+      // check whether cron job is running
+      function(cb) { 
         Setting.find({field: 'cron_running'}).exec(function(err, settings) {
          // console.log(settings);
           if (settings[0].value == '1') {
@@ -22,177 +24,143 @@ module.exports = {
           }
         });
       },
+      // fetch the task
       function(_can_run, cb) {
-        if (_can_run == false) {
-          // cb(null, false);
+        if (_can_run === false) {
+          cb(null, false);
           return;
         }
-        Tasks.find({
+
+        Tasks.findOne({
           where: { status: 1 },
           sort: 'id ASC'
-        }).exec(function(tasks) {
-          async.eachSeries(tasks, function(_task, _task_callback) {//get confirm tasks
-            Website.findOne({
-              task_id: _task.id
-            }).exec(function(websites) {
-              _task.coupons.push(websites.coupon);
-              _task_callback();
-            }).catch(function(err) {
-              _task.coupons = [];
-              _task_callback();
+        }).exec(function(err, task) {
+          if (err) {
+          } else {
+            Tasks.update({
+              id: task.id
+            }, {
+              status: 2
+            }).then(function() {
+              cb(null, _can_run, task);
             });
-          }, function done() {
-            console.log('Get tasks !');
-            cb(null, tasks);
-          });
-        }).catch(function(err) {
-          console.log(err);
+          }
+        }
+      },
+      // fetch the website
+      function(_can_run, task, cb) {
+        if (_can_run === false) {
+          cb(null, false);
+          return;
+        }
+
+        Website.findOne({
+          task_id: task.id
+        }).exec(function(err, website) {
+          if (err) {
+
+          } else {
+            cb(null, _can_run, task, website);
+          }
         });
       },
-      function(tasks, cb) {
-        async.eachSeries(tasks, function (_task, _task_callback){
-          Tasks.update({//task is running status
-            id: _task.id
-          },{
-            status: 2
-          }).then(function(updated) {
-            console.log(_task.id + 'Task is running');
-          }).catch(function(err) {
-            console.log(err);
+      // run the task
+      function(_can_run, task, website, cb) {
+        if (_can_run === false) {
+          cb(null, false);
+          return;
+        }
+
+        var website_codes = JSON.parse(website.coupon);
+        website_codes = website_codes.map(function(entry) {
+          return entry.code;
+        });
+
+        CsvService._read(task.csv_filename, function(csvs) {
+          var csv_codes = csvs.map(function(entry) {
+            return entry.code;
           });
-          CsvService._read(_task.csv_filename, function(codes) {//read csv
-            var repeat_code = [];
-            async.eachSeries(codes, function(_code, _code_callback){
-              if(_.where(_task.coupons, {code: _code.code}).length > 0){
-                repeat_code.push(_code);
-                _code_callback();
-              }else{
-                _task.coupons.push(_code);
-                BigCommerceService.create({//create bigcommerce coupons
-                  username: _task.username,
-                  host: _task.url,
-                  token: _task.token
-                }, {
-                    'name': _task._rules.coupon_name,
-                    'type': _task._rules.discount_type,
-                    'code': _code.code,
-                    'amount': _task._rules.discount_amount,
-                    'enabled': true,
-                    'applies_to': {
-                        'entity': 'categories',
-                        'ids': '[' + _task.category + ']'
-                    },
-                    'max_uses': _task._rules.max_uses,
-                    'num_uses' _task._rules.num_uses,
-                }, function (response){
-                  console.log(response.id + 'is created coupon');
-                  _code_callback();
-                });
-              }
-            }, function done() {
-              if(_task.is_upload == 0){
-                if(repeat_code.length > 0){
-                  CouponService.generate(_task._rules, _task.coupons, function(csv_filename, coupon_codes) {
-                    async.eachSeries(coupon_codes.data, function(_coupon_code, _coupon_code_callback){
-                      if(_task.is_upload == 0){
-                        var _create_params = {
-                          'name': _task._rules.coupon_name,
-                          'type': _task._rules.discount_type,
-                          'code': _coupon_code.code,
-                          'amount': _task._rules.discount_amount,
-                          'enabled': true,
-                          'applies_to': {
-                              'entity': 'categories',
-                              'ids': '[' + _task.category + ']'
-                          },
-                          'max_uses': _task._rules.max_uses,
-                          'num_uses' _task._rules.num_uses,
-                          },
-                        }
-                      }else{
-                        var _create_params = {
-                          'name': _coupon_code.name,
-                          'type': _coupon_code.discount_type,
-                          'code': _coupon_code.code,
-                          'amount': _coupon_code.discount_amount,
-                          'enabled': true,
-                          'applies_to': {
-                              'entity': 'categories',
-                              'ids': '[' + _coupon_code.category + ']'
-                          },
-                          'max_uses': _coupon_code._rules.max_uses,
-                          'num_uses' _coupon_code._rules.num_uses,
-                          },
-                        }
-                      }
-                      BigCommerceService.create({
-                        username: _task.username,
-                        host: _task.url,
-                        token: _task.token
-                      }, _create_params,
-                      }, function (response){
-                        coupon_code_callback();
-                        console.log(response.id + 'is created coupon repeat');
-                      });
-                    }, function done (){
-                      Tasks.update({
-                        id: _task.id
-                      },{
-                        status: 3
-                      }).then(function(updated) {
-                        console.log(updated);
-                        _task_callback();
-                      }).catch(function(err) {
-                        console.log(err);
-                        _task_callback();
-                      });
-                    });
-                  });
-                }else{
-                  Tasks.update({
-                    id: _task.id
-                  },{
-                    status: 3
-                  }).then(function(updated) {
-                    console.log(updated);
-                    _task_callback();
-                  }).catch(function(err) {
-                    console.log(err);
-                    _task_callback();
-                  });
-                }
-              }else{
-                Tasks.update({
-                    id: _task.id
-                },{
-                    status: 3
-                }).then(function(updated) {
-                  console.log('Is repeat' + repeat_code.length + 'codes, others we created');
-                  _task_callback();
-                  console.log(updated);
-                }).catch(function(err) {
-                  console.log(err);
-                  _task_callback();
-                });
-              }
-              EmailService('views/emails/',{
-                form:,
-                to:,
-                subject: 'aaoo',
-                attachments: [
-                    {
-                        filename: _task.csv_filename,
-                        path: 'assets/download/' + _task.csv_filename
-                    }
-                ]
-              }, function(info) {
-                console.log(info);
-              });
+
+          var duplicated_codes = _.intersect(website_codes, csv_codes);
+          var code_collection = _.union(website_codes, csv_codes);
+          var rules = task._rules;
+
+          // regenerate duplocated coupons
+          if (task.is_upload == 0 && duplicated_codes.length > 0) {
+            rules.number = duplicated_codes.length;
+
+            code_collection = _.union(
+              code_collection, 
+              CouponService.generate(rules, code_collection)
+            );
+          }
+
+          var task_name = rule.coupon_name,
+              task_discount_type = rule.discount_type,
+              task_discount_amount = rule.discount_amount,
+              task_max_uses = rule.max_uses,
+              task_num_uses = rule.num_uses;
+
+          if (task.is_upload == 1) {
+            task_name = csvs.name;
+            task_discount_type = csvs.discount_type;
+            task_discount_amount = csvs.discount_amount;
+            task_max_uses = csvs.max_uses;
+            task_num_uses = csvs.num_uses;
+          } 
+
+          async.eachSeries(code_collection, function(code, cb) {
+            BigCommerceService.create({
+              username: task.username,
+              host: task.url,
+              token: task.token 
+            }, {
+              'name': task_name,
+              'type': task_discount_type,
+              'code': _code.code,
+              'amount': task_discount_amount,
+              'enabled': true,
+              'applies_to': {
+                  'entity': 'categories',
+                  'ids': '[' + _task.category + ']'
+              },
+              'max_uses': task_max_uses,
+              'num_uses': task_num_uses
+            }, function(response) {
+              sleep(SLEEP_INTERVAL);
+              cb();
             });
           });
         }, function done() {
-          cb(null);
+          cb(null, task);
         });
+      },
+      // update task status
+      function(task, cb) {
+        Tasks.update({
+          id: task.id
+        },{
+          status: 3
+        }).then(function(updated) {
+          cb(null, task);
+        }).catch(function(err) {
+          cb(err);
+        });
+      },
+      // send email
+      function(task, cb) {
+        EmailService.send(
+          sails.config.email.template.complete,
+          {
+            'from': sails.config.email.from,
+            'to': task.email,
+            'subject': 'Task Complete #' + task.id + ' from AAOO Tech',
+            'task': task
+          },
+          function(err, info) {
+            cb(null, task);
+          }
+        );
       }
     ]);
   }

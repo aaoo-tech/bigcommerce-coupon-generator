@@ -214,7 +214,7 @@
                 EmailService.send(
                     sails.config.email.template.confirmation,
                     {
-                        'from': 'AAOO Tech Ltd. <contact@aaoo-tech.com>',
+                        'from': sails.config.email.from,
                         'to': task.email,
                         'subject': 'Task Confirmation #' + task.id + ' from AAOO Tech',
                         'task': task
