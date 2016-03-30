@@ -22,7 +22,6 @@ module.exports = {
             callback(null);
           });
         } else {
-          console.log(2);
           Setting.update({
             field: field
           }, {
