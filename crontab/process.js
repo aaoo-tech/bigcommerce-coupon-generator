@@ -31,10 +31,14 @@ module.exports = {
           if (err) {
             cb(err);
           } else {
-            task._rules = JSON.pare(task._rules);
+          	if (_.isUndefined(task) === true) {
+          		cb('No more task to run.');
+          		return;
+			}
+            task._rules = JSON.parse(task._rules);
             cb(null, task);
           }
-        }
+        });
       },
       // update the task status
       function(task, cb) {
@@ -79,7 +83,7 @@ module.exports = {
       // prepare the task
       function(task, website, csvs, cb) {
         // check duplicate coupons
-        var duplicated_codes = _.intersect(website.coupon, task.coupon);
+        var duplicated_codes = _.intersection(website.coupon, task.coupon);
         var code_collection = _.union(website.coupon, task.coupon);
 
         if (duplicated_codes.length > 0) {
@@ -120,10 +124,10 @@ module.exports = {
               tmp['num_uses'] = task._rules.num_uses;
             }
 
-            if (task._rules.category.length > 0) {
+            if (task.category.length > 0) {
               tmp['applies_to'] = {
                 'entity': 'categories',
-                'ids': task._rules.category.split(',')
+                'ids': task.category.split(',')
               };
             }
 
