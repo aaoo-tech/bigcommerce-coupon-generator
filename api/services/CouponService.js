@@ -93,15 +93,5 @@ module.exports = {
     }
 
     return data;
-
-    // fill the csv files
-    var fields = ['name', 'code', 'discount_type', 'discount_amount', 'max_uses', 'num_uses', 'expire_date'];
-
-    CsvService._write(data, fields, function (filename){
-      callback(filename, {
-        "data": data,
-        'fields': fields
-      });
-    });
   }
 };
