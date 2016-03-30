@@ -31,10 +31,10 @@ module.exports = {
           if (err) {
             cb(err);
           } else {
-          	if (_.isUndefined(task) === true) {
-          		cb('No more task to run.');
-          		return;
-			}
+            if (_.isUndefined(task) === true) {
+              cb('No more task to run.');
+              return;
+            }
             task._rules = JSON.parse(task._rules);
             cb(null, task);
           }
@@ -171,20 +171,22 @@ module.exports = {
         cb(null, task, website, csvs, coupons);
       },
       // run the task
-      // function(task, website, csvs, coupons, cb) {
-      //   async.eachSeries(coupons, function(coupon, cb) {
-      //     BigCommerceService.create({
-      //       username: task.username,
-      //       host: task.url,
-      //       token: task.token 
-      //     }, coupon, function(response) {
-      //       sleep(SLEEP_INTERVAL);
-      //       cb();
-      //     });
-      //   }, function() {
-      //     cb(null, task, website, csvs, coupons);
-      //   });
-      // },
+/* ONLY ENALBE ON LIVE
+      function(task, website, csvs, coupons, cb) {
+        async.eachSeries(coupons, function(coupon, cb) {
+          BigCommerceService.create({
+            username: task.username,
+            host: task.url,
+            token: task.token 
+          }, coupon, function(response) {
+            sleep(SLEEP_INTERVAL);
+            cb();
+          });
+        }, function() {
+          cb(null, task, website, csvs, coupons);
+        });
+      },
+*/
       // update task status
       function(task, website, csvs, coupons, cb) {
         Tasks.update({
@@ -211,6 +213,12 @@ module.exports = {
             cb(err, task);
           }
         );
+      },
+      // set cronjob status
+      function(cb) {
+        SettingService.set('cron_running', '0', function() {
+          cb(null);
+        });
       }
     ], function(err) {
       if (err) {
