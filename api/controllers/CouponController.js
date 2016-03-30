@@ -195,7 +195,7 @@
                     var effective_codes = [];
                     var _filename = 'coupon-code-' + moment().format('YYYY-MM-DD') + '-' + randomstring.generate(7) + ".csv";
                     var data = csv2json.csvtojson(files[0].fd);
-                    var fields = ['name', 'code', 'discount_type', 'discount_amount', 'max_uses', 'num_uses', 'expire_date', 'category'];
+                    var fields = ['name', 'code', 'discount_type', 'discount_amount', 'max_uses', 'num_uses', 'expire_date'];
                     async.eachSeries(data, function(_coupon_code, _coupon_code_callback){
                         if(_coupon_code.code && _coupon_code.code != ''){
                             effective_codes.push(_coupon_code);
