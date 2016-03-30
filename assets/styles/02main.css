@@ -1,0 +1,80 @@
+body { font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 20px; color: #333; background: url(./bg.jpg) no-repeat fixed center; background-size: cover; }
+
+.clear { clear: both; }
+.fl{ float: left; }
+
+.col-10 { width: 10%; }
+.col-20 { width: 20%; }
+.col-25 { width: 25%; }
+.col-30 { width: 30%; }
+.col-40 { width: 40%; }
+.col-70 { width: 68.8%; }
+
+.ui-widget-content { border: 1px solid  #ccc; }
+.ui-menu .ui-menu-item { padding:5px;  color: #000; }
+.ui-state-default { border: none; box-sizing:border-box; border-radius: 0;  }
+.ui-state-default .ui-icon { background: url(./customSelect-arrow.png) center no-repeat; }
+.ui-selectmenu-button span.ui-selectmenu-text{ padding: 6px; line-height: 18px; color: #000; border: 1px solid #ccc; border-radius: 0; }
+span.ui-state-focus { outline: none; }
+.ui-datepicker-calendar a.ui-state-default { text-align: center;  }
+
+div.ui-datepicker { padding: 10px; }
+.ui-datepicker .ui-datepicker-prev-hover, .ui-datepicker .ui-datepicker-next-hover,
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { top: 5px; cursor: pointer; }
+
+.lobibox.lobibox-success .lobibox-header,
+.lobibox.lobibox-success .lobibox-body{ background: #19a568; color: #fff; }
+.lobibox.lobibox-error .lobibox-header,
+.lobibox.lobibox-error .lobibox-body { background: #ee2748; color: #fff; }
+.lobibox.lobibox-info .lobibox-header,
+.lobibox.lobibox-info .lobibox-body { background: #0086a3; color: #fff; }
+
+:-ms-input-placeholder { font-style: italic; font-size: 14px; padding: 6px 5px; font-family:Arial; color: #999; }
+::-moz-placeholder { font-style: italic; font-size: 14px; font-family:Arial; color: #999; }
+::-webkit-input-placeholder { font-style: italic; font-size: 14px; font-family:Arial; color: #999; }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button { -webkit-appearance: none !important; }
+input[type="number"] { -moz-appearance: textfield; }
+
+input { width: 100%; display: inline-block; padding: 4px 5px; font-size: 18px; border: 1px solid #ccc; }
+#select-discount-type ~ input { vertical-align: top; }
+input[type="number"] { text-align: center; }
+select { width: 100%; padding: 4px 5px; font-size: 16px; border: 1px solid #ccc; }
+h1,h2 { font-weight: 400; color: #000; font-size: 18px; }
+
+/*.bg { position: absolute; margin: 0; top: 0; right: 0; bottom: 0; left: 0; background: url(./bg.jpg) fixed center; background-size: cover; }*/
+.wrap { position: relative; width: 430px; padding: 20px 0px; margin: 50px auto 0; background-color: #fff; border: 1px solid #ccc; box-sizing:border-box; }
+
+.wrap section { visibility: hidden; opacity: 0; padding: 0 30px; position: absolute; top: 0; left: 0; ; }
+.wrap section.active { visibility: visible; opacity: 1; position: static; }
+
+.wrap .form label.required:after { content:"*"; color: #f00; }
+.wrap .title span { float: left; width: 20px; height: 20px; margin: 5px 10px 0 0; line-height: 21px; text-align: center; font-family: "Courier New", Courier, monospace; font-size: 14px; border-radius: 50%; color: #fff; background-color: #111; }
+.wrap .title h1 { line-height: 30px; font-weight: 400;}
+.wrap .hide { display: none; margin-bottom: 26px; }
+.wrap .title,
+.wrap .tips { margin-bottom: 24px; }
+
+.wrap .tips a { display: block; line-height: 24px; padding: 3px 20px; background-color: #ec7063; color: #fff; }
+.wrap .tips a:hover { background: #e74c3c; }
+.wrap .form .entry.fl { padding-right: 2px; }
+.wrap .form .entry { margin-bottom: 26px; box-sizing:border-box; }
+
+.wrap .form .preview { margin-bottom: 24px; }
+.wrap .form .preview p { padding: 6px; background-color: #eee; font-size: 18px; line-height: 18px; text-align: center; }
+
+.wrap .form label { display: block; margin-bottom: 5px; }
+.wrap .form .btn { float: left; width: 43%; box-sizing:border-box; }
+.wrap .form .btn a { display: block; border-radius: 5px; height: 40px; line-height: 40px; color: #fff; text-align: center; }
+.wrap .form .btn.change { float: right;}
+.wrap .form .btn.change a { background-color: #0086a3; }
+.wrap .form .btn.change a:hover { background-color: #00b8e0; }
+.wrap .form .btn.submit a { background-color: #19a568; }
+.wrap .form .btn.submit a:hover { background-color: #1ed284; }
+.wrap .form .checkbox input { float: left; width: auto; width: 20px; height: 20px; margin-right: 10px; }
+
+.wrap .text h2 { margin: 30px 0 50px; }
+.wrap .text p { margin: 30px 0; line-height: 1.6em;}
+
+div.dz-error-mark > p { padding: 10px 0; text-align: center; }

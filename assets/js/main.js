@@ -1,5 +1,12 @@
 (function($) {
   $(function() {
+    $('select').selectmenu();
+    $('input.date').datepicker({
+        minDate: 0,
+        dateFormat: 'mm-dd-yy',
+        changeYear: true,
+        changeMonth: true,
+    });
     _.templateSettings = {
         interpolate: /\{\{=(.+?)\}\}/g,
         evaluate: /\{\{(.+?)\}\}/g,
@@ -9,8 +16,7 @@
     $('body').on('click', '.quick .submit', function (event) {
         var $form = $(event.target).closest('form'),
             _data = $form.serializeObject();
-        
-        $.fancybox.showLoading();
+        // $.fancybox.showLoading();
         $.ajax({
             url: '/coupon/express',
             data: _data,
@@ -41,8 +47,6 @@
     $('body').on('click', '.advanced .submit', function (event){
         var $form = $(event.target).closest('form'),
             _data = $form.serializeObject();
-
-        $.fancybox.showLoading();
         $.ajax({
             url: '/coupon/advanced',
             data: _data,
@@ -70,19 +74,19 @@
 
     // submit website information
     $('body').on('click', '.upload .submit', function (event){
-        var $form = $(event.target).closest('form'),
-            _data = $form.serializeObject();
+        $form = $(event.target).closest('form');
+        var _data = $form.serializeObject();
         
         Lobibox.alert('info', {
             msg: 'It will take some time for us to validate your API token and fetch coupons\' and categories\' information.',
             beforeClose: function($this) {
-
-                $.fancybox.showLoading();
                 $.ajax({
                     url: '/task/create',
                     data: _data,
                     type: 'POST',
-                    // beforeSend: function() { $.fancybox.showLoading(); }
+                    // beforeSend: function() { 
+                    //     $.fancybox.showLoading(); 
+                    // }
                 }).done(function (response) {
                     $.fancybox.hideLoading();
                     if (response.success == true) {
@@ -110,10 +114,9 @@
 
     // create task with website info
     $('body').on('click', '.confirmation .submit', function (event){
-        var $form = $(event.target).closest('form'),
-            _data = $form.serializeObject();
+        $form = $(event.target).closest('form');
+        var _data = $form.serializeObject();
 
-        $.fancybox.showLoading();
         $.ajax({
             url: '/task/confirm',
             data: _data,
@@ -192,7 +195,7 @@
     
     // upload
     $('a.show-upload').click(function(){
-        $('.hide').slideDown(500);
+        $('.hide').slideToggle(500);
         return false;
     });
 
@@ -207,16 +210,16 @@
         init: function() {
             this.on("success", function(file, res) {
                 if(res.success === true){
+                    $('.dropzone').css('background', '#40d498');
                     var para=document.createElement("p");
-                    var node=document.createTextNode("OK!");
+                    var node=document.createTextNode("The file has been uploaded !");
                     para.appendChild(node);
                     file.previewTemplate.appendChild(para);
-                    $('section.advanced').removeClass('active');
-                    $('section.quick').removeClass('active');
-                    $('section.upload').addClass('active');
+                    setTimeout("$('section.quick').removeClass('active');$('section.advanced').removeClass('active');$('section.upload').addClass('active');",2000);
                 }else{
+                    $('.dropzone').css('background', '#F3FF93');
                     var para=document.createElement("p");
-                    var node=document.createTextNode("NO!");
+                    var node=document.createTextNode("The file has been uploaded, CSV files must be filled in according to the specified field !");
                     para.appendChild(node);
                     file.previewTemplate.appendChild(para);
                 }
@@ -228,7 +231,7 @@
     $('body').on('click','.quick .form .change a',function(){
         $('section.quick').removeClass('active');
         $('section.advanced').addClass('active');
-        $('section.advanced select').customSelect();
+        // $('section.advanced select').customSelect();
         return false;
     });
     $('body').on('click','.advanced .form .change a',function(){
@@ -238,7 +241,7 @@
     });
     
     // customize select look and feel
-    $('section.quick select').customSelect();
+    // $('section.quick select').customSelect();
 
   });
 })(jQuery);
