@@ -78,3 +78,5 @@ h1,h2 { font-weight: 400; color: #000; font-size: 18px; }
 .wrap .text p { margin: 30px 0; line-height: 1.6em;}
 
 div.dz-error-mark > p { padding: 10px 0; text-align: center; }
+
+.error { box-shadow: 0px 0px 1px 1px red; }

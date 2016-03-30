@@ -21,9 +21,17 @@
             url: '/coupon/express',
             data: _data,
             type: 'POST',
-            // beforeSend: function() { $.fancybox.showLoading(); }
+            beforeSend: function(xhr) {
+                if (_data.number == '') {
+                    $('.quick form input[type="number"]').addClass('error');
+                    // Lobibox.alert('error', {
+                    //     msg: 'The number is required.'
+                    // });
+                    return false;
+                }
+            }
         }).done(function (response){
-            $.fancybox.hideLoading(); 
+            // $.fancybox.hideLoading(); 
             if (response.success == true) {
                 Lobibox.alert('success', {
                     msg: 'Your coupon codes are successfully generated.',
@@ -51,6 +59,22 @@
             url: '/coupon/advanced',
             data: _data,
             type: 'POST',
+            beforeSend: function(xhr) {
+                if (_data.number == '') {
+                    $('.advanced form input[name="number"]').addClass('error');
+                    // Lobibox.alert('error', {
+                    //     msg: 'The number is required.'
+                    // });
+                    return false;
+                }
+                if (_data.coupon_name == '') {
+                    $('.advanced form input[name="coupon_name"]').addClass('error');
+                    // Lobibox.alert('error', {
+                    //     msg: 'The coupon name is required.'
+                    // });
+                    return false;
+                }
+            }
             // beforeSend: function() { $.fancybox.showLoading(); }
         }).done(function (response) {
             $.fancybox.hideLoading(); 
@@ -84,9 +108,24 @@
                     url: '/task/create',
                     data: _data,
                     type: 'POST',
-                    // beforeSend: function() { 
-                    //     $.fancybox.showLoading(); 
-                    // }
+                    beforeSend: function(xhr) {
+                        if(_data.email == ''){
+                            $('.upload form input[name="email"]').addClass('error');
+                            return false;
+                        }
+                        if(_data.url == ''){
+                            $('.upload form input[name="url"]').addClass('error');
+                            return false;
+                        }
+                        if(_data.username == ''){
+                            $('.upload form input[name="username"]').addClass('error');
+                            return false;
+                        }
+                        if(_data.token == ''){
+                            $('.upload form input[name="token"]').addClass('error');
+                            return false;
+                        }
+                    }
                 }).done(function (response) {
                     $.fancybox.hideLoading();
                     if (response.success == true) {
