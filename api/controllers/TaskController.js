@@ -159,7 +159,13 @@
                 return entry.code;
             });
 
-            CsvService._read(task.csv_filename, function(codes) {
+            CsvService.read(task.csv_filename, function(err, codes) {
+                if (err) {
+                    return res.json({
+                        success: false,
+                        message: err
+                    });
+                }
                 console.log(codes);
 
                 var existed = coupons.length,

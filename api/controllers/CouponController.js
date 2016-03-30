@@ -126,7 +126,14 @@
         var codes = CouponService.generate(params, []);
         var fields = ['name', 'code', 'discount_type', 'discount_amount', 'max_uses', 'num_uses', 'expire_date'];
 
-        CsvService._write(codes, fields, function(filename) {
+        CsvService.write(codes, fields, function(err, filename) {
+            if (err) {
+                return res.json({
+                    success: false,
+                    message: err
+                });
+            }
+
             req.session._filename = filename;
             return res.json({
                 success: true,
@@ -157,7 +164,13 @@
         var codes = CouponService.generate(params, []);
         var fields = ['name', 'code', 'discount_type', 'discount_amount', 'max_uses', 'num_uses', 'expire_date'];
 
-        CsvService._write(codes, fields, function(filename) {
+        CsvService.write(codes, fields, function(err, filename) {
+            if (err) {
+                return res.json({
+                    success: false,
+                    message: err
+                });
+            }
             req.session._filename = filename;
             return res.json({
                 success: true,
@@ -191,8 +204,13 @@
                     }, function done() {
                         console.log(effective_codes);
                         if(effective_codes.length > 0){
-                            CsvService._write(data, fields, function (filename){
-                                console.log(filename);
+                            CsvService.write(data, fields, function (err, filename) {
+                                if (err) {
+                                    return res.json({
+                                        success: false,
+                                        message: err
+                                    });
+                                }
                                 console.log('yes');
                                 req.session._rules = [];
                                 req.session._filename = filename;
