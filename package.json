@@ -35,7 +35,7 @@
     "sails-disk": "~0.10.0",
     "sails-mysql": "^0.11.5",
     "should": "^8.3.0",
-
+    "sleep": "^3.0.1",
     "underscore": "^1.8.3"
   },
   "scripts": {
