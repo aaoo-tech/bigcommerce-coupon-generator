@@ -11,6 +11,6 @@ module.exports = {
     url: 'string',
     coupon: 'text',
     categories: 'text',
-    task_id: 'integer'
+    // task_id: 'integer'
   }
 };
