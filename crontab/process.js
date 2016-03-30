@@ -34,11 +34,11 @@ module.exports = {
             if (_.isUndefined(task) === true) {
               SettingService.set('cron_running', '0', function() {
                 cb('No more task to run.');
-			  });
+              });
             } else {
               task._rules = JSON.parse(task._rules);
               cb(null, task);
-			}
+            }
           }
         });
       },
