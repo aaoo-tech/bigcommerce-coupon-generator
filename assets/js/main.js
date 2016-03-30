@@ -210,6 +210,7 @@
         init: function() {
             this.on("success", function(file, res) {
                 if(res.success === true){
+                    $(".upload .tips a").attr('href', "/coupon/download?filename=" + res.data.filename);
                     $('.dropzone').css('background', '#40d498');
                     var para=document.createElement("p");
                     var node=document.createTextNode("The file has been uploaded !");

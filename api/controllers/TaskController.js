@@ -123,7 +123,7 @@
                             url: task.url,
                             coupon: JSON.stringify(coupons),
                             categories: JSON.stringify(categories),
-                            task_id: task.id
+                            // task_id: task.id
                         }).then(function(website) {
                             cb(null, coupons, categories);
                         });
@@ -134,7 +134,7 @@
                         }, {
                             coupon: JSON.stringify(coupons),
                             categories: JSON.stringify(categories),
-                            task_id: task.id
+                            // task_id: task.id
                         }).exec(function() {
                             cb(null, task, coupons, categories);
                         });
