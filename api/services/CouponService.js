@@ -28,7 +28,7 @@ module.exports = {
     { name: 'Free shipping' },
   ],
   upload: function(bigcommerce, params, callback) {
-    BigCommerceService.posts(bigcommerce, '/api/v2/coupons.json', params, function (data) {
+    BigcommerceService.posts(bigcommerce, '/api/v2/coupons.json', params, function (data) {
       callback(data);
     });
   },

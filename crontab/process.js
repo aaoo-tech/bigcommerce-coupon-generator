@@ -32,11 +32,13 @@ module.exports = {
             cb(err);
           } else {
             if (_.isUndefined(task) === true) {
-              cb('No more task to run.');
-              return;
-            }
-            task._rules = JSON.parse(task._rules);
-            cb(null, task);
+              SettingService.set('cron_running', '0', function() {
+                cb('No more task to run.');
+			  });
+            } else {
+              task._rules = JSON.parse(task._rules);
+              cb(null, task);
+			}
           }
         });
       },
@@ -107,11 +109,11 @@ module.exports = {
         if (task.is_upload == 0) {
           _.each(task.coupon, function(coupon) {
             var tmp = {};
-            tmp['name'] = task._rules.coupon_name;
+            tmp['name'] = task._rules.coupon_name + ' (' + coupon + ')';
             tmp['type'] = task._rules.discount_type;
             tmp['amount'] = task._rules.discount_amount;
             tmp['code'] = coupon;
-            tmp['enable'] = true;
+            tmp['enabled'] = true;
             tmp['applies_to'] = {};
 
             if (_.isNull(task._rules.max_uses) === false && 
@@ -119,10 +121,10 @@ module.exports = {
               tmp['max_uses'] = task._rules.max_uses;
             }
 
-            if (_.isNull(task._rules.num_uses) === false && 
-                _.isUndefined(task._rules.num_uses) === false) {
-              tmp['num_uses'] = task._rules.num_uses;
-            }
+//            if (_.isNull(task._rules.num_uses) === false && 
+//                _.isUndefined(task._rules.num_uses) === false) {
+//              tmp['num_uses'] = task._rules.num_uses;
+//            }
 
             if (task.category.length > 0) {
               tmp['applies_to'] = {
@@ -140,11 +142,11 @@ module.exports = {
             }
 
             var tmp = {};
-            tmp['name'] = entry.name;
+            tmp['name'] = entry.name + ' (' + entry.code + ')';
             tmp['type'] = entry.discount_type;
             tmp['amount'] = entry.discount_amount;
             tmp['code'] = entry.code;
-            tmp['enable'] = true;
+            tmp['enabled'] = true;
             tmp['applies_to'] = {};
 
             if (_.isNull(entry.max_uses) === false && 
@@ -152,10 +154,10 @@ module.exports = {
               tmp['max_uses'] = entry.max_uses;
             }
 
-            if (_.isNull(entry.num_uses) === false && 
-                _.isUndefined(entry.num_uses) === false) {
-              tmp['num_uses'] = entry.num_uses;
-            }
+//            if (_.isNull(entry.num_uses) === false && 
+//                _.isUndefined(entry.num_uses) === false) {
+//              tmp['num_uses'] = entry.num_uses;
+//            }
 
             // if (entry.category.length > 0) {
             //   tmp['applies_to'] = {
@@ -174,12 +176,13 @@ module.exports = {
 /* ONLY ENALBE ON LIVE
       function(task, website, csvs, coupons, cb) {
         async.eachSeries(coupons, function(coupon, cb) {
-          BigCommerceService.create({
+          CouponService.upload({
             username: task.username,
             host: task.url,
             token: task.token 
           }, coupon, function(response) {
-            sleep(SLEEP_INTERVAL);
+            sleep.sleep(SLEEP_INTERVAL);
+            console.log(response);
             cb();
           });
         }, function() {
@@ -199,6 +202,12 @@ module.exports = {
           cb(err);
         });
       },
+      // set cronjob status
+      function(task, website, csvs, coupons, cb) {
+        SettingService.set('cron_running', '0', function() {
+          cb(null, task, website, csvs, coupons);
+        });
+      },
       // send email
       function(task, website, csvs, coupons, cb) {
         EmailService.send(
@@ -213,12 +222,6 @@ module.exports = {
             cb(err, task);
           }
         );
-      },
-      // set cronjob status
-      function(cb) {
-        SettingService.set('cron_running', '0', function() {
-          cb(null);
-        });
       }
     ], function(err) {
       if (err) {
