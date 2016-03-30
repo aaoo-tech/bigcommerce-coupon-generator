@@ -68,7 +68,7 @@ var _post = function(path, params, _callback) {
 };
 
 module.exports = {
-  gets: function(bigcommerce, auth, params, callback) {
+  gets: function(bigcommerce, path, params, callback) {
 
     host = bigcommerce.host;
     var username = bigcommerce.username,
@@ -92,7 +92,7 @@ module.exports = {
       var _p = p.slice();
       _p.push('page=' + _page);
 
-      var _path = util.format(auth + '?%s', _p.join('&'));
+      var _path = util.format(path + '?%s', _p.join('&'));
       console.log(bigcommerce, _path);
       _get(_path, function(response) {
         if (response.length == 0) {
@@ -129,7 +129,7 @@ module.exports = {
     };
     _gets(1);
   },
-  posts: function(bigcommerce, params, callback) {
+  posts: function(bigcommerce, path, params, callback) {
 
     host = bigcommerce.host;
     var username = bigcommerce.username,
@@ -140,7 +140,7 @@ module.exports = {
         'Authorization': 'Basic ' + new Buffer(authorization).toString('base64'),
         'Content-Type': 'application/json'
     };
-    var _path = auth;
+    var _path = path;
     _post(_path, params, function (response) {
         var data = JSON.parse(response);
         callback(data);

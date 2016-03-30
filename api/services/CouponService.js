@@ -27,8 +27,13 @@ module.exports = {
     { name: 'Dollar amount off the shipping total' },
     { name: 'Free shipping' },
   ],
-  fetch: function(bigcommerces, params, callback) {
-    BigcommerceService.gets(bigcommerces, '/api/v2/coupons.json', params, function (data){
+  upload: function(bigcommerce, params, callback) {
+    BigcommerceService.posts(bigcommerce, '/api/v2/coupons.json', params, function (data) {
+      callback(data);
+    });
+  },
+  fetch: function(bigcommerce, params, callback) {
+    BigcommerceService.gets(bigcommerce, '/api/v2/coupons.json', params, function (data){
       callback(data);
     });
   },

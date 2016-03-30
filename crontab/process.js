@@ -31,10 +31,16 @@ module.exports = {
           if (err) {
             cb(err);
           } else {
-            task._rules = JSON.pare(task._rules);
-            cb(null, task);
+            if (_.isUndefined(task) === true) {
+              SettingService.set('cron_running', '0', function() {
+                cb('No more task to run.');
+              });
+            } else {
+              task._rules = JSON.parse(task._rules);
+              cb(null, task);
+            }
           }
-        }
+        });
       },
       // update the task status
       function(task, cb) {
@@ -79,7 +85,7 @@ module.exports = {
       // prepare the task
       function(task, website, csvs, cb) {
         // check duplicate coupons
-        var duplicated_codes = _.intersect(website.coupon, task.coupon);
+        var duplicated_codes = _.intersection(website.coupon, task.coupon);
         var code_collection = _.union(website.coupon, task.coupon);
 
         if (duplicated_codes.length > 0) {
@@ -103,11 +109,11 @@ module.exports = {
         if (task.is_upload == 0) {
           _.each(task.coupon, function(coupon) {
             var tmp = {};
-            tmp['name'] = task._rules.coupon_name;
+            tmp['name'] = task._rules.coupon_name + ' (' + coupon + ')';
             tmp['type'] = task._rules.discount_type;
             tmp['amount'] = task._rules.discount_amount;
             tmp['code'] = coupon;
-            tmp['enable'] = true;
+            tmp['enabled'] = true;
             tmp['applies_to'] = {};
 
             if (_.isNull(task._rules.max_uses) === false && 
@@ -115,15 +121,15 @@ module.exports = {
               tmp['max_uses'] = task._rules.max_uses;
             }
 
-            if (_.isNull(task._rules.num_uses) === false && 
-                _.isUndefined(task._rules.num_uses) === false) {
-              tmp['num_uses'] = task._rules.num_uses;
-            }
+//            if (_.isNull(task._rules.num_uses) === false && 
+//                _.isUndefined(task._rules.num_uses) === false) {
+//              tmp['num_uses'] = task._rules.num_uses;
+//            }
 
-            if (task._rules.category.length > 0) {
+            if (task.category.length > 0) {
               tmp['applies_to'] = {
                 'entity': 'categories',
-                'ids': task._rules.category.split(',')
+                'ids': task.category.split(',')
               };
             }
 
@@ -136,11 +142,11 @@ module.exports = {
             }
 
             var tmp = {};
-            tmp['name'] = entry.name;
+            tmp['name'] = entry.name + ' (' + entry.code + ')';
             tmp['type'] = entry.discount_type;
             tmp['amount'] = entry.discount_amount;
             tmp['code'] = entry.code;
-            tmp['enable'] = true;
+            tmp['enabled'] = true;
             tmp['applies_to'] = {};
 
             if (_.isNull(entry.max_uses) === false && 
@@ -148,10 +154,10 @@ module.exports = {
               tmp['max_uses'] = entry.max_uses;
             }
 
-            if (_.isNull(entry.num_uses) === false && 
-                _.isUndefined(entry.num_uses) === false) {
-              tmp['num_uses'] = entry.num_uses;
-            }
+//            if (_.isNull(entry.num_uses) === false && 
+//                _.isUndefined(entry.num_uses) === false) {
+//              tmp['num_uses'] = entry.num_uses;
+//            }
 
             // if (entry.category.length > 0) {
             //   tmp['applies_to'] = {
@@ -167,20 +173,23 @@ module.exports = {
         cb(null, task, website, csvs, coupons);
       },
       // run the task
-      // function(task, website, csvs, coupons, cb) {
-      //   async.eachSeries(coupons, function(coupon, cb) {
-      //     BigCommerceService.create({
-      //       username: task.username,
-      //       host: task.url,
-      //       token: task.token 
-      //     }, coupon, function(response) {
-      //       sleep(SLEEP_INTERVAL);
-      //       cb();
-      //     });
-      //   }, function() {
-      //     cb(null, task, website, csvs, coupons);
-      //   });
-      // },
+/* ONLY ENALBE ON LIVE
+      function(task, website, csvs, coupons, cb) {
+        async.eachSeries(coupons, function(coupon, cb) {
+          CouponService.upload({
+            username: task.username,
+            host: task.url,
+            token: task.token 
+          }, coupon, function(response) {
+            sleep.sleep(SLEEP_INTERVAL);
+            console.log(response);
+            cb();
+          });
+        }, function() {
+          cb(null, task, website, csvs, coupons);
+        });
+      },
+*/
       // update task status
       function(task, website, csvs, coupons, cb) {
         Tasks.update({
@@ -191,6 +200,12 @@ module.exports = {
           cb(null, task, website, csvs, coupons);
         }).catch(function(err) {
           cb(err);
+        });
+      },
+      // set cronjob status
+      function(task, website, csvs, coupons, cb) {
+        SettingService.set('cron_running', '0', function() {
+          cb(null, task, website, csvs, coupons);
         });
       },
       // send email
