@@ -55,7 +55,8 @@ module.exports = {
         }
 
         Website.findOne({
-          task_id: task.id
+          // task_id: task.id
+          url: task.url
         }).exec(function(err, website) {
           if (err) {
 
