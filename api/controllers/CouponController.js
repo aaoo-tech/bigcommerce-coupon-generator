@@ -158,7 +158,7 @@
         var fields = ['name', 'code', 'discount_type', 'discount_amount', 'max_uses', 'num_uses', 'expire_date'];
 
         CsvService._write(codes, fields, function(filename) {
-            req.session._filename = filename.filename;
+            req.session._filename = filename;
             return res.json({
                 success: true,
                 data: { filename: filename }
