@@ -184,7 +184,7 @@
                     var data = csv2json.csvtojson(files[0].fd);
                     var fields = ['name', 'code', 'discount_type', 'discount_amount', 'max_uses', 'num_uses', 'expire_date', 'category'];
                     async.eachSeries(data, function(_coupon_code, _coupon_code_callback){
-                        if(_coupon_code.category && _coupon_code.category != '' && _coupon_code.code && _coupon_code.code != ''){
+                        if(_coupon_code.code && _coupon_code.code != ''){
                             effective_codes.push(_coupon_code);
                         }
                         _coupon_code_callback();
@@ -192,13 +192,14 @@
                         console.log(effective_codes);
                         if(effective_codes.length > 0){
                             CsvService._write(data, fields, function (filename){
+                                console.log(filename);
                                 console.log('yes');
                                 req.session._rules = [];
-                                req.session._filename = _filename;
+                                req.session._filename = filename;
                                 req.session.is_upload = 1;
                                 return res.json({
                                     success: true,
-                                    data: { filename: _filename }
+                                    data: { filename: filename }
                                 });
                             });
                         }else{
