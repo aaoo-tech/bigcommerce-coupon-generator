@@ -1,4 +1,4 @@
-body { font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 20px; color: #333; background: url(../images/bg.jpg) no-repeat fixed center; background-size: cover; }
+body { min-height: 980px; position: relative; font: 14px/20px Arial, Helvetica, sans-serif; color: #333; background: url(../images/bg.jpg) center 0 no-repeat; background-attachment: fixed; }
 
 .clear { clear: both; }
 .fl{ float: left; }
@@ -8,28 +8,21 @@ body { font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 
 .col-25 { width: 25%; }
 .col-30 { width: 30%; }
 .col-40 { width: 40%; }
-.col-70 { width: 68.8%; }
+.col-70 { width: 69.2%; }
 
-.ui-widget-content { border: 1px solid  #ccc; }
-.ui-menu .ui-menu-item { padding:5px;  color: #000; }
-.ui-state-default { border: none; box-sizing:border-box; border-radius: 0;  }
-.ui-state-default .ui-icon { background: url(../images/customSelect-arrow.png) center no-repeat; }
-.ui-selectmenu-button span.ui-selectmenu-text{ padding: 6px; line-height: 18px; color: #000; border: 1px solid #ccc; border-radius: 0; }
-span.ui-state-focus { outline: none; }
-.ui-datepicker-calendar a.ui-state-default { text-align: center;  }
+div.lobibox.lobibox-success div.lobibox-footer,
+div.lobibox.lobibox-success div.lobibox-header,
+div.lobibox.lobibox-success div.lobibox-body{ background: #19a568; color: #fff; }
+div.lobibox.lobibox-error div.lobibox-footer,
+div.lobibox.lobibox-error div.lobibox-header,
+div.lobibox.lobibox-error div.lobibox-body { background: #ee2748; color: #fff; }
+div.lobibox.lobibox-info div.lobibox-footer,
+div.lobibox.lobibox-info div.lobibox-header,
+div.lobibox.lobibox-info div.lobibox-body { background: #0086a3; color: #fff; }
 
-div.ui-datepicker { padding: 10px; }
-.ui-datepicker .ui-datepicker-prev-hover, .ui-datepicker .ui-datepicker-next-hover,
-.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { top: 5px; cursor: pointer; }
 
-.lobibox.lobibox-success .lobibox-header,
-.lobibox.lobibox-success .lobibox-body{ background: #19a568; color: #fff; }
-.lobibox.lobibox-error .lobibox-header,
-.lobibox.lobibox-error .lobibox-body { background: #ee2748; color: #fff; }
-.lobibox.lobibox-info .lobibox-header,
-.lobibox.lobibox-info .lobibox-body { background: #0086a3; color: #fff; }
 
-:-ms-input-placeholder { font-style: italic; font-size: 14px; padding: 6px 5px; font-family:Arial; color: #999; }
+:-ms-input-placeholder { font-style: italic; height: 32px; font-size: 16px; padding: 5px; font-family:Arial; color: #999; }
 ::-moz-placeholder { font-style: italic; font-size: 14px; font-family:Arial; color: #999; }
 ::-webkit-input-placeholder { font-style: italic; font-size: 14px; font-family:Arial; color: #999; }
 
@@ -37,16 +30,20 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button { -webkit-appearance: none !important; }
 input[type="number"] { -moz-appearance: textfield; }
 
-input { width: 100%; display: inline-block; padding: 4px 5px; font-size: 18px; border: 1px solid #ccc; }
-#select-discount-type ~ input { vertical-align: top; }
-input[type="number"] { text-align: center; }
-select { width: 100%; padding: 4px 5px; font-size: 16px; border: 1px solid #ccc; }
+
+.header a.logo { display: block; max-width: 1280px; height: 30px; padding: 20px 0; margin: 0 auto; }
+.header a.logo  img { width: auto; height: 100%; }
+
+input { width: 100%;  height: 32px; display: inline-block; padding: 5px 5px 5px; font-size: 16px; border: 1px solid #ccc; }
+input.date,input[type="number"] { text-align: center; }
+select { width: 100%; padding: 5px 5px; font-size: 16px; border: 1px solid #ccc; cursor: pointer; }
+span.customSelect { height: 32px; padding: 0 5px ; margin-right: 2px; line-height: 30px; font-size: 16px; border: 1px solid #ccc; overflow: hidden; white-space: nowrap;  box-sizing:border-box; }
+span.customSelectInner { background: url(../images/customSelect-arrow.png) no-repeat center right ; }
 h1,h2 { font-weight: 400; color: #000; font-size: 18px; }
 
-/*.bg { position: absolute; margin: 0; top: 0; right: 0; bottom: 0; left: 0; background: url(./bg.jpg) fixed center; background-size: cover; }*/
-.wrap { position: relative; width: 430px; padding: 20px 0px; margin: 50px auto 0; background-color: #fff; border: 1px solid #ccc; box-sizing:border-box; }
+.wrap { position: absolute; width: 430px; padding: 20px 0px; margin: 20px auto ; right: 0; left: 0; top: 50%; transform: translateY(-50%); background-color: #fff; border: 1px solid #ccc; box-sizing:border-box; }
 
-.wrap section { visibility: hidden; opacity: 0; padding: 0 30px; position: absolute; top: 0; left: 0; ; }
+.wrap section { visibility: hidden; opacity: 0; padding: 0 30px; position: absolute; top: -100%; left: 0; }
 .wrap section.active { visibility: visible; opacity: 1; position: static; }
 
 .wrap .form label.required:after { content:"*"; color: #f00; }
@@ -58,11 +55,15 @@ h1,h2 { font-weight: 400; color: #000; font-size: 18px; }
 
 .wrap .tips a { display: block; line-height: 24px; padding: 3px 20px; background-color: #ec7063; color: #fff; }
 .wrap .tips a:hover { background: #e74c3c; }
-.wrap .form .entry.fl { padding-right: 2px; }
-.wrap .form .entry { margin-bottom: 26px; box-sizing:border-box; }
 
+.wrap .form .entry { margin-bottom: 26px; box-sizing:border-box; }
+.wrap .form .entry.fl { padding-right: 2px; }
+.wrap .form .select.fl  { margin-right: 2px; }
 .wrap .form .preview { margin-bottom: 24px; }
 .wrap .form .preview p { padding: 6px; background-color: #eee; font-size: 18px; line-height: 18px; text-align: center; }
+.wrap .form .expiry-date input { display: inline-block; width: 31%; margin: 0 1%; }
+.wrap .form .expiry-date input:first-of-type { margin: 0 1% 0 0; }
+.wrap .form .expiry-date input:last-of-type { margin: 0 0 0 1%; }
 
 .wrap .form label { display: block; margin-bottom: 5px; }
 .wrap .form .btn { float: left; width: 43%; box-sizing:border-box; }
@@ -79,4 +80,11 @@ h1,h2 { font-weight: 400; color: #000; font-size: 18px; }
 
 div.dz-error-mark > p { padding: 10px 0; text-align: center; }
 
-.error { box-shadow: 0px 0px 1px 1px red; }
+.footer { position: fixed; padding: 5px; margin: 8px;line-height: 30px; right: 0; bottom: 0;  text-align: right; background-color: rgba(0,0,0,0.7); border-radius: 2px; }
+.footer .links {  padding: 0 10px; }
+.footer .links a { color: #009CFF; font-size: 16px; }
+.footer .links a:hover { color: #ABDEFF; }
+.footer .links a:first-of-type:after { content: "|"; color: #009CFF; padding: 2px 10px 0; }
+.footer .copyright { color: #CBCBCB; padding: 0 10px; }
+
+.error { outline: 1px solid #e74c3c; }
