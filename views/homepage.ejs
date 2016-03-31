@@ -1,3 +1,7 @@
+    <div class="header">
+        <a class="logo" href=""><img src="/images/logo.png"></a>
+    </div>
+    <!-- <div id="loading"></div> -->
     <div class="wrap">
     <section class="quick active clearfix">
         <div class="title">
@@ -86,11 +90,13 @@
                 </div>
                 <div class="entry">
                     <label name="select-discount-type" class="required">Discount Type</label>
-                    <select id="select-discount-type" class="fl col-70" name="discount_type">
-                    <% for (var i = 0, l = discount_types.length; i < l; i++) { %>
-                        <option value="<%= i %>"><%= discount_types[i].name %></option>
-                    <% } %>
-                    </select>
+                    <div class="fl select col-70">
+                        <select id="select-discount-type" name="discount_type">
+                        <% for (var i = 0, l = discount_types.length; i < l; i++) { %>
+                            <option value="<%= i %>"><%= discount_types[i].name %></option>
+                        <% } %>
+                        </select>
+                    </div>
                     <input class="col-30" type="number" name="discount_amount" value="10" class="center" />
                 </div>
                 <div class="entry">
@@ -101,9 +107,10 @@
                     <label for="ipt-uses-per-customer">Limt number of uses per customer</label>
                     <input id="ipt-users-per-customer" type="number" name="num_uses" placeholder="Leave it empty for no limit" />
                 </div>
-                <div class="entry">
+                <div class="entry expiry-date">
                     <label for="ipt-expiry-date">Expiry Date</label>
-                    <input id="ipt-expiry-date" class="date" type="text" name="expiry_date" />
+                    <!-- <input id="ipt-expiry-date" class="date" type="text" name="expiry_date" /> -->
+                    <input type="number" name="day" placeholder="Day" />-<input type="number" name="month" placeholder="Month" />-<input type="number" name="year" placeholder="Year" />
                 </div>
                 <div class="btn submit">
                     <a href="">Generate!</a>
@@ -194,4 +201,8 @@
             <p>AAOO Team</p>
         </div>
     </section>
+    </div>
+    <div class="footer">
+        <div class="links"><a href="">Terms & Conditions</a><a href="">Privacy Policy</a></div>
+        <div class="copyright"> © 2015 Copyrights AAOO TECH LTD . All rights Reserved </div>
     </div>

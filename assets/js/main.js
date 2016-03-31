@@ -1,21 +1,25 @@
 (function($) {
   $(function() {
-    $('select').selectmenu();
-    $('input.date').datepicker({
-        minDate: 0,
-        dateFormat: 'mm-dd-yy',
-        changeYear: true,
-        changeMonth: true,
-    });
+    $('select').customSelect();
+
+
+    var showLoading = function(){
+        $('body').append("<div id='loading'><div><ul><li></li><li></li><li></li><li></li></ul><ul><li></li><li></li><li></li><li></li></ul></div></div>");
+    };
+    var closeLoading = function(){
+        $("#loading").remove();
+    };
     _.templateSettings = {
         interpolate: /\{\{=(.+?)\}\}/g,
         evaluate: /\{\{(.+?)\}\}/g,
     };
+    var valid_params = function (params,rules){
+
+    }
     // express form
     $('body').on('click', '.quick .submit', function (event) {
         var $form = $(event.target).closest('form'),
             _data = $form.serializeObject();
-        // $.fancybox.showLoading();
         $.ajax({
             url: '/coupon/express',
             data: _data,
@@ -27,9 +31,10 @@
                 }else{
                     $('.advanced form input[name="number"]').removeClass('error');
                 }
+                showLoading();
             }
         }).done(function (response){
-            // $.fancybox.hideLoading(); 
+            closeLoading();
             if (response.success == true) {
                 Lobibox.alert('success', {
                     msg: 'Your coupon codes are successfully generated.',
@@ -53,6 +58,21 @@
     $('body').on('click', '.advanced .submit', function (event){
         var $form = $(event.target).closest('form'),
             _data = $form.serializeObject();
+            _data.day = ""+parseInt(_data.day),
+            _data.month = ""+parseInt(_data.month);
+            console.log(_data);
+            if(_data.day != '' || _data.month != '' || _data.year != ''){
+                if(_data.day.match(/^[1-9]\d*$/g) == null || _data.day > (new Date(_data.year,_data.month,0)).getDate() || _data.month.match(/^[1-9]\d*$/g) == null || _data.month > 12 || _data.year.match(/^[1-9]\d*$/g) == null || _data.year < (new Date()).getFullYear()){
+                    $('.expiry-date input').addClass('error');
+                    Lobibox.alert('error', {
+                        msg: 'Please fill in the date according to the specification.'
+                    });
+                    return false;
+                }else{
+                    $('.expiry-date input').removeClass('error');
+                    _data.expiry_date = _data.year + '-' + _data.month + '-' + _data.date;
+                }
+            }
         $.ajax({
             url: '/coupon/advanced',
             data: _data,
@@ -71,10 +91,10 @@
                 if(_data.number.match(/^[1-9]\d*$/g) == null || _data.coupon_name.match(/^.*[^ ].*$/g) == null){
                     return false;
                 }
+                showLoading();
             }
-            // beforeSend: function() { $.fancybox.showLoading(); }
         }).done(function (response) {
-            $.fancybox.hideLoading(); 
+            closeLoading();
             if (response.success == true) {
                 Lobibox.alert('success', {
                     msg: 'Your coupon codes are successfully generated.',
@@ -118,24 +138,25 @@
                         }else{
                             $('.upload form input[name="url"]').removeClass('error');
                         }
-                        if(_data.username == ''){
+                        if(_data.username.match(/^.*[^ ].*$/g) == null){
                             $('.upload form input[name="username"]').addClass('error');
                             // return false;
                         }else{
                             $('.upload form input[name="username"]').removeClass('error');
                         }
-                        if(_data.token == ''){
+                        if(_data.token.match(/^.*[^ ].*$/g) == null){
                             $('.upload form input[name="token"]').addClass('error');
                             // return false;
                         }else{
                             $('.upload form input[name="token"]').removeClass('error');
                         }
-                        if(_data.email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g) == null || _data.url.match(/^([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/g) == null || _data.username == '' || _data.token == ''){
+                        if(_data.email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g) == null || _data.url.match(/^([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/g) == null || _data.username.match(/^.*[^ ].*$/g) == null || _data.token.match(/^.*[^ ].*$/g) == null){
                             return false;
                         }
+                        showLoading();
                     }
                 }).done(function (response) {
-                    $.fancybox.hideLoading();
+                    closeLoading();
                     if (response.success == true) {
                         Lobibox.alert('success', {
                             msg: 'Information has been correctly fetched.',
@@ -168,9 +189,9 @@
             url: '/task/confirm',
             data: _data,
             type: 'POST',
-            // beforeSend: function() { $.fancybox.showLoading(); }
+            beforeSend: function() { showLoading(); }
         }).done(function (response) {
-            $.fancybox.hideLoading();
+            closeLoading();
             if (response.success == true) {
                 Lobibox.alert('success', {
                     msg: 'Your task has been confirmed and will receive a confirmation email shortly.',
