@@ -11,7 +11,6 @@
         interpolate: /\{\{=(.+?)\}\}/g,
         evaluate: /\{\{(.+?)\}\}/g,
     };
-
     // express form
     $('body').on('click', '.quick .submit', function (event) {
         var $form = $(event.target).closest('form'),
@@ -61,15 +60,16 @@
             beforeSend: function(xhr) {
                 if (_data.number.match(/^[1-9]\d*$/g) == null) {
                     $('.advanced form input[name="number"]').addClass('error');
-                    return false;
                 }else{
                     $('.advanced form input[name="number"]').removeClass('error');
                 }
                 if (_data.coupon_name.match(/^.*[^ ].*$/g) == null) {
                     $('.advanced form input[name="coupon_name"]').addClass('error');
-                    return false;
                 }else{
                     $('.advanced form input[name="coupon_name"]').removeClass('error');
+                }
+                if(_data.number.match(/^[1-9]\d*$/g) == null || _data.coupon_name.match(/^.*[^ ].*$/g) == null){
+                    return false;
                 }
             }
             // beforeSend: function() { $.fancybox.showLoading(); }
@@ -108,27 +108,30 @@
                     beforeSend: function(xhr) {
                         if(_data.email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g) == null){
                             $('.upload form input[name="email"]').addClass('error');
-                            return false;
+                            // return false;
                         }else{
                             $('.upload form input[name="email"]').removeClass('error');
                         }
                         if(_data.url.match(/^([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/g) == null){
                             $('.upload form input[name="url"]').addClass('error');
-                            return false;
+                            // return false;
                         }else{
                             $('.upload form input[name="url"]').removeClass('error');
                         }
                         if(_data.username == ''){
                             $('.upload form input[name="username"]').addClass('error');
-                            return false;
+                            // return false;
                         }else{
                             $('.upload form input[name="username"]').removeClass('error');
                         }
                         if(_data.token == ''){
                             $('.upload form input[name="token"]').addClass('error');
-                            return false;
+                            // return false;
                         }else{
                             $('.upload form input[name="token"]').removeClass('error');
+                        }
+                        if(_data.email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g) == null || _data.url.match(/^([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/g) == null || _data.username == '' || _data.token == ''){
+                            return false;
                         }
                     }
                 }).done(function (response) {
