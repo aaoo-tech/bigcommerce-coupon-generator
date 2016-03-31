@@ -22,12 +22,11 @@
             data: _data,
             type: 'POST',
             beforeSend: function(xhr) {
-                if (_data.number == '') {
+                if (_data.number.match(/^[1-9]\d*$/g) == null) {
                     $('.quick form input[type="number"]').addClass('error');
-                    // Lobibox.alert('error', {
-                    //     msg: 'The number is required.'
-                    // });
                     return false;
+                }else{
+                    $('.advanced form input[name="number"]').removeClass('error');
                 }
             }
         }).done(function (response){
@@ -60,19 +59,17 @@
             data: _data,
             type: 'POST',
             beforeSend: function(xhr) {
-                if (_data.number == '') {
+                if (_data.number.match(/^[1-9]\d*$/g) == null) {
                     $('.advanced form input[name="number"]').addClass('error');
-                    // Lobibox.alert('error', {
-                    //     msg: 'The number is required.'
-                    // });
                     return false;
+                }else{
+                    $('.advanced form input[name="number"]').removeClass('error');
                 }
-                if (_data.coupon_name == '') {
+                if (_data.coupon_name.match(/^.*[^ ].*$/g) == null) {
                     $('.advanced form input[name="coupon_name"]').addClass('error');
-                    // Lobibox.alert('error', {
-                    //     msg: 'The coupon name is required.'
-                    // });
                     return false;
+                }else{
+                    $('.advanced form input[name="coupon_name"]').removeClass('error');
                 }
             }
             // beforeSend: function() { $.fancybox.showLoading(); }
@@ -109,21 +106,29 @@
                     data: _data,
                     type: 'POST',
                     beforeSend: function(xhr) {
-                        if(_data.email == ''){
+                        if(_data.email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g) == null){
                             $('.upload form input[name="email"]').addClass('error');
                             return false;
+                        }else{
+                            $('.upload form input[name="email"]').removeClass('error');
                         }
-                        if(_data.url == ''){
+                        if(_data.url.match(/^([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/g) == null){
                             $('.upload form input[name="url"]').addClass('error');
                             return false;
+                        }else{
+                            $('.upload form input[name="url"]').removeClass('error');
                         }
                         if(_data.username == ''){
                             $('.upload form input[name="username"]').addClass('error');
                             return false;
+                        }else{
+                            $('.upload form input[name="username"]').removeClass('error');
                         }
                         if(_data.token == ''){
                             $('.upload form input[name="token"]').addClass('error');
                             return false;
+                        }else{
+                            $('.upload form input[name="token"]').removeClass('error');
                         }
                     }
                 }).done(function (response) {
