@@ -18,7 +18,7 @@
             _data = $form.serializeObject();
         // $.fancybox.showLoading();
         $.ajax({
-            url: '/coupon/express',
+            url: './coupon/express',
             data: _data,
             type: 'POST',
             beforeSend: function(xhr) {
@@ -36,7 +36,7 @@
                 Lobibox.alert('success', {
                     msg: 'Your coupon codes are successfully generated.',
                     beforeClose: function($this) {
-                        $(".upload .tips a").attr('href', "/coupon/download?filename=" + response.data.filename);
+                        $(".upload .tips a").attr('href', "./coupon/download?filename=" + response.data.filename);
                         $('section.quick').removeClass('active');
                         $('section.upload').addClass('active');
                     }
@@ -56,7 +56,7 @@
         var $form = $(event.target).closest('form'),
             _data = $form.serializeObject();
         $.ajax({
-            url: '/coupon/advanced',
+            url: './coupon/advanced',
             data: _data,
             type: 'POST',
             beforeSend: function(xhr) {
@@ -82,7 +82,7 @@
                 Lobibox.alert('success', {
                     msg: 'Your coupon codes are successfully generated.',
                     beforeClose: function($this) {
-                        $(".upload .tips a").attr('href', "/coupon/download?filename=" + response.data.filename);
+                        $(".upload .tips a").attr('href', "./coupon/download?filename=" + response.data.filename);
                         $('section.advanced').removeClass('active');
                         $('section.upload').addClass('active');
                     }
@@ -105,7 +105,7 @@
             msg: 'It will take some time for us to validate your API token and fetch coupons\' and categories\' information.',
             beforeClose: function($this) {
                 $.ajax({
-                    url: '/task/create',
+                    url: './task/create',
                     data: _data,
                     type: 'POST',
                     beforeSend: function(xhr) {
@@ -157,7 +157,7 @@
         var _data = $form.serializeObject();
 
         $.ajax({
-            url: '/task/confirm',
+            url: './task/confirm',
             data: _data,
             type: 'POST',
             // beforeSend: function() { $.fancybox.showLoading(); }
@@ -249,7 +249,7 @@
         init: function() {
             this.on("success", function(file, res) {
                 if(res.success === true){
-                    $(".upload .tips a").attr('href', "/coupon/download?filename=" + res.data.filename);
+                    $(".upload .tips a").attr('href', "./coupon/download?filename=" + res.data.filename);
                     $('.dropzone').css('background', '#40d498');
                     var para=document.createElement("p");
                     var node=document.createTextNode("The file has been uploaded !");
