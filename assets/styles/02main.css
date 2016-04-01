@@ -61,9 +61,9 @@ h1,h2 { font-weight: 400; color: #000; font-size: 18px; }
 .wrap .form .select.fl  { margin-right: 2px; }
 .wrap .form .preview { margin-bottom: 24px; }
 .wrap .form .preview p { padding: 6px; background-color: #eee; font-size: 18px; line-height: 18px; text-align: center; }
-.wrap .form .expiry-date input { display: inline-block; width: 31%; margin: 0 1%; }
-.wrap .form .expiry-date input:first-of-type { margin: 0 1% 0 0; }
-.wrap .form .expiry-date input:last-of-type { margin: 0 0 0 1%; }
+.wrap .form .expire-date input { display: inline-block; width: 31%; margin: 0 1%; }
+.wrap .form .expire-date input:first-of-type { margin: 0 1% 0 0; }
+.wrap .form .expire-date input:last-of-type { margin: 0 0 0 1%; }
 
 .wrap .form label { display: block; margin-bottom: 5px; }
 .wrap .form .btn { float: left; width: 43%; box-sizing:border-box; }

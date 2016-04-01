@@ -65,17 +65,17 @@
                 if(_data.month.length < 2){
                     _data.month = '0' + _data.month;
                 }
-                var expiry_date = _data.year + '-' + _data.month + '-' + _data.day;
-                console.log(expiry_date);
-                if(expiry_date.match(/([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8])))/g) == null || _data.year < (new Date()).getFullYear()){
-                    $('.expiry-date input').addClass('error');
+                var expire_date = _data.year + '-' + _data.month + '-' + _data.day;
+                console.log(expire_date);
+                if(expire_date.match(/([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8])))/g) == null || _data.year < (new Date()).getFullYear()){
+                    $('.expire-date input').addClass('error');
                     Lobibox.alert('error', {
                         msg: 'Please fill in the date according to the specification.'
                     });
                     return false;
                 }else{
-                    $('.expiry-date input').removeClass('error');
-                    _data.expiry_date = expiry_date;
+                    $('.expire-date input').removeClass('error');
+                    _data.expire_date = expire_date;
                 }
             }
         $.ajax({
